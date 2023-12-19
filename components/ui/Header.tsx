@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   Menubar,
   MenubarContent,
@@ -30,11 +31,15 @@ const Header = () => {
           <MenubarTrigger>Usuarios</MenubarTrigger>
           <MenubarContent>
             <MenubarItem>Ver todos os usuarios</MenubarItem>
-            <MenubarItem>Cadastrar novo usuario</MenubarItem>
+            <MenubarItem>
+              <Link href="/dashboard/signUp">Cadastrar novo usuario</Link>
+            </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
         <MenubarMenu>
-          <MenubarTrigger>Dashboard</MenubarTrigger>
+          <MenubarTrigger>
+            <Link href="/dashboard">Dashboard</Link>
+          </MenubarTrigger>
         </MenubarMenu>
       </Menubar>
     </header>
