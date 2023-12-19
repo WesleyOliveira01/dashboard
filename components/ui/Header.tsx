@@ -20,27 +20,39 @@ import { MenuIcon } from "lucide-react";
 const Header = () => {
   return (
     <header className="bg-zinc-950 p-4 flex justify-between items-center">
-      <h1 className="text-zinc-50 lg:text-2xl font-semibold"><Link href="/dashboard">Dashboard</Link></h1>
+      <h1 className="text-zinc-50 lg:text-2xl font-semibold">
+        <Link href="/dashboard">Dashboard</Link>
+      </h1>
 
       <Menubar className="mobile:hidden bg-zinc-950 text-zinc-50 border-none">
         <MenubarMenu>
           <MenubarTrigger>Planos</MenubarTrigger>
           <MenubarContent>
-            <MenubarItem>Planos cadastrados</MenubarItem>
-            <MenubarItem>Criar novo plano</MenubarItem>
+            <MenubarItem>
+              <Link href="/dashboard/plans">Planos cadastrados</Link>
+            </MenubarItem>
+            <MenubarItem>
+              <Link href="/dashboard/plans/newPlan">Criar novo plano</Link>
+            </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
         <MenubarMenu>
           <MenubarTrigger>Cadastros de novos cliente</MenubarTrigger>
           <MenubarContent>
-            <MenubarItem>Ver todos os cadastrados</MenubarItem>
-            <MenubarItem>Novo cadastro</MenubarItem>
+            <MenubarItem>
+              <Link href="/dashboard/clients">Ver todos os cadastrados</Link>
+            </MenubarItem>
+            <MenubarItem>
+              <Link href="/dashboard/clients/newClient">Novo cadastro</Link>
+            </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
         <MenubarMenu>
           <MenubarTrigger>Usuarios</MenubarTrigger>
           <MenubarContent>
-            <MenubarItem>Ver todos os usuarios</MenubarItem>
+            <MenubarItem>
+              <Link href="/dashboard/users">Ver todos os usuarios</Link>
+            </MenubarItem>
             <MenubarItem>
               <Link href="/dashboard/signUp">Cadastrar novo usuario</Link>
             </MenubarItem>
@@ -62,8 +74,14 @@ const Header = () => {
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="flex flex-col gap-3 p-2">
-                      <li>Planos Cadastrados</li>
-                      <li>Criar novo plano</li>
+                      <li>
+                        <Link href="/dashboard/plans">Planos cadastrados</Link>
+                      </li>
+                      <li>
+                        <Link href="/dashboard/plans/newPlan">
+                          Criar novo plano
+                        </Link>
+                      </li>
                     </ul>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
@@ -73,8 +91,16 @@ const Header = () => {
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="flex flex-col gap-3 p-2">
-                      <li>Ver todos os cadastrados</li>
-                      <li>Novo cadastro</li>
+                      <li>
+                        <Link href="/dashboard/clients">
+                          Ver todos os cadastrados
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/dashboard/clients/newClient">
+                          Novo cadastro
+                        </Link>
+                      </li>
                     </ul>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
@@ -84,7 +110,11 @@ const Header = () => {
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="flex flex-col gap-3 p-2">
-                      <li>Ver todos os usuarios</li>
+                      <li>
+                        <Link href="/dashboard/users">
+                          Ver todos os usuarios
+                        </Link>
+                      </li>
                       <li>
                         <Link href="/dashboard/signUp">
                           Cadastrar novo usuario
