@@ -14,7 +14,7 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@radix-ui/react-navigation-menu";
+} from "./navigation-menu";
 import { MenuIcon } from "lucide-react";
 
 const Header = () => {
