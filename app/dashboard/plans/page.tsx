@@ -1,8 +1,10 @@
+import Container from "@/components/ui/Container";
+
 const Plans = () => {
     return ( 
-        <main>
+        <Container>
             planos
-        </main>
+        </Container>
      );
 }
  

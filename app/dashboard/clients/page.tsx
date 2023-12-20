@@ -1,8 +1,10 @@
+import Container from "@/components/ui/Container";
+
 const Clients = () => {
     return ( 
-        <main>
+        <Container>
             clients
-        </main>
+        </Container>
      );
 }
  

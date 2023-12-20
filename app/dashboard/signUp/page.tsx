@@ -1,9 +1,10 @@
+import Container from '@/components/ui/Container';
 import SignUpForm from '../../../components/login/SignUp-Form';
 const SignUp = () => {
     return ( 
-        <main className='h-screen flex items-center justify-center '>
+        <Container>
             <SignUpForm />
-        </main>
+        </Container>
      );
 }
  

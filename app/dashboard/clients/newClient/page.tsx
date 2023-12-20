@@ -1,7 +1,7 @@
 const NewClient = () => {
-    return ( <main>
+    return ( <>
         new client
-    </main> );
+    </> );
 }
  
 export default NewClient;
