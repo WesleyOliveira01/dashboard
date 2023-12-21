@@ -1,14 +1,13 @@
 "use server";
+import { authData, signUpData } from "@/interfaces/auth-interfaces";
 import prisma from "@/lib/db";
 import { compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 class authService {
-  static async login(formData: FormData) {
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-
+  static async login({ email, password }: authData) {
     const user = await prisma.user.findFirst({
       where: {
         email: email,
@@ -38,6 +37,12 @@ class authService {
       secure: true,
       expires: Date.now() + oneMount,
     });
+
+    redirect('/dashboard')
+  }
+
+  static async createUser(signUpData:signUpData) {
+    console.log(signUpData);
   }
 }
 
