@@ -6,10 +6,11 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   forElement: string;
   label_cn?: string;
   input_cn?: string;
+  error_message:string
 };
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ type = "text", label, forElement, input_cn, label_cn,...rest }, ref) => {
+  ({ type = "text", label, forElement, input_cn, label_cn,error_message,...rest }, ref) => {
     return (
       <section className="flex flex-col gap-2">
         <label
@@ -27,6 +28,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           {...rest}
         />
+        <p className="text-rose-500">
+            {error_message}
+        </p>
       </section>
     );
   }
