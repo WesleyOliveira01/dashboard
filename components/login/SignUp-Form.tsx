@@ -9,29 +9,36 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import { authService } from "@/actions/auth/authservice";
+import * as authService  from "@/actions/auth/authservice";
 import { signUpData } from "@/interfaces/auth-interfaces";
 
 const formSchema = z.object({
-  name: z.string({ required_error: "O nome é obrigatorio" }).min(3,{message:'insira um nome valido'}),
-  email: z.string({ required_error: "O E-mail é obrigatorio" }).email({message:"insira um email valido"}).min(5,{message:"insira um email valido"}),
+  name: z
+    .string({ required_error: "O nome é obrigatorio" })
+    .min(3, { message: "insira um nome valido" }),
+  email: z
+    .string({ required_error: "O E-mail é obrigatorio" })
+    .email({ message: "insira um email valido" })
+    .min(5, { message: "insira um email valido" }),
   password: z
     .string({ required_error: "A senha é obrigatorio" })
     .min(8, { message: "a senha deve ter pelo menos 8 digitos" }),
-  permissions: z.enum(["default user", "admin"], {
-    required_error: "selecione a permissão do usuario",
-    
-  }),
+  permissions: z
+    .string({ invalid_type_error: "Selecione uma opção válida" })
+    .refine((value) => {
+      return ["default user", "admin"].includes(value);
+    })
+    .transform((value) => value === "admin"),
 });
 
 const SignUpForm = () => {
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<z.infer<typeof formSchema>>({
@@ -40,9 +47,10 @@ const SignUpForm = () => {
     reValidateMode: "onChange",
   });
 
-  const onFormSubmit = (formData:signUpData) => {
-    authService.createUser(formData)
-  }
+  const {createUser } = authService
+  const onFormSubmit = async (formData: signUpData) => {
+    await createUser(formData);
+  };
   return (
     <Card className="lg:w-[50%] w-[95%]">
       <form onSubmit={handleSubmit(onFormSubmit)}>
@@ -69,21 +77,32 @@ const SignUpForm = () => {
               />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <h1 className="font-semibold">Permissões do usuario</h1>
-              <RadioGroup
-                {...register("permissions")}
-                className="lg:flex lg:flex-row lg:justify-around lg:w-[50%]"
-              >
+              <h1 className="font-semibold">Permissões do usuário</h1>
+              <div className="lg:flex lg:flex-row lg:justify-around lg:w-[50%]">
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="default user" id="default user" />
-                  <label htmlFor="default user">Usuario padrão</label>
+                  <input
+                    type="radio"
+                    id="default_user"
+                    value="default user"
+                    className="form-radio text-zinc-950 focus:ring-zinc-950"
+                    {...register("permissions")}
+                  />
+                  <label htmlFor="default_user">Usuário padrão</label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="admin" id="admin" />
+                  <input
+                    type="radio"
+                    id="admin"
+                    value="admin"
+                    className="form-radio text-zinc-950 focus:ring-zinc-950"
+                    {...register("permissions")}
+                  />
                   <label htmlFor="admin">Administrador</label>
                 </div>
-              </RadioGroup>
-              {errors?.permissions && <p className="text-red-500">{errors?.permissions?.message}</p>}
+              </div>
+              {errors?.permissions && (
+                <p className="text-red-500">{errors?.permissions?.message}</p>
+              )}
             </div>
             <div className="flex flex-col space-y-1.5">
               <Input
