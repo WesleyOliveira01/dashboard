@@ -14,8 +14,8 @@ async function login({ email, password }: authData) {
   });
 
   if (!user) throw new Error("User not found");
-  const isMatch = compare(password, user.password);
-  if (!isMatch) throw new Error("Invalid email/password");
+  const isMatch = await compare(password,user.password);
+  if (!isMatch) throw new Error("email ou senha invalido");
 
   const token = sign(
     {
@@ -52,8 +52,7 @@ async function createUser(signUpData: signUpData) {
     },
   });
 
-  console.log(newUser)
-  
+  redirect("/dashboard/users");
 }
 
 export { createUser, login };

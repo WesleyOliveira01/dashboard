@@ -1,18 +1,16 @@
-import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server"
-import jwt from "jsonwebtoken"
+import { NextRequest, NextResponse } from "next/server";
 
-export const middleware = async (req:NextRequest) => {
-    const token = cookies().get("token") as any as string;
-    
-    const isValidToken = jwt.verify(token,process.env.JWT_SECRET)
+export const middleware = async (req: NextRequest) => {
+  const token = req.cookies.get("token") as any as string;
+  const isLoggedIn = token ? true : false;
 
-    if(!isValidToken){
-        NextResponse.redirect(new URL("/",req.url))
-    }
-    
-}
+  if (!isLoggedIn) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
+  return NextResponse.next();
+};
 
 export const config = {
-    matcher: ["/dashboard/:path*"]
-}
+  matcher: ["/dashboard", "/dashboard/:path*"],
+};
