@@ -22,7 +22,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <input
           className={twMerge(
             input_cn,
-            "outline-none p-3 border border-zinc-200 rounded-md"
+            "outline-none p-3 focus:border-zinc-200 focus:ring-0 border border-zinc-200 rounded-md"
           )}
           type={type}
           ref={ref}
