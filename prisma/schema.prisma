@@ -14,6 +14,6 @@ model User{
   id String @id @default(uuid())
   name String
   email String
-  isAdmin Boolean? @default(true)
+  isAdmin Boolean
   password String
 }
