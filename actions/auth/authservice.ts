@@ -73,5 +73,11 @@ async function getUserDetails(){
 
 }
 
-export { createUser, getUserDetails, login };
+async function getAllUsers() {
+    const allUsers = await prisma.user.findMany({select:{id:true,name:true,email:true,isAdmin:true}})
+
+    return allUsers
+}
+
+export { createUser, getUserDetails, login,getAllUsers };
 
