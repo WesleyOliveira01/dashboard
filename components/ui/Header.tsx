@@ -16,8 +16,12 @@ import {
   NavigationMenuTrigger,
 } from "./navigation-menu";
 import { MenuIcon } from "lucide-react";
+import * as authService from "@/actions/auth/authservice";
 
-const Header = () => {
+const Header = async () => {
+  const {getUserDetails} = authService
+  const userDetails = await getUserDetails()
+
   return (
     <header className="bg-zinc-950 p-4 flex justify-between items-center">
       <h1 className="text-zinc-50 lg:text-2xl font-semibold">
@@ -56,7 +60,13 @@ const Header = () => {
             <MenubarItem>
               <Link href="/dashboard/signUp">Cadastrar novo usuario</Link>
             </MenubarItem>
+
           </MenubarContent>
+        </MenubarMenu>
+        <MenubarMenu>
+          <MenubarTrigger>
+            Ola {userDetails.simpleName}
+          </MenubarTrigger>
         </MenubarMenu>
       </Menubar>
 
