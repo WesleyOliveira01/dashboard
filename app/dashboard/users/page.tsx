@@ -1,50 +1,25 @@
-import Button from "@/components/ui/Button";
-import { BadgeX } from "lucide-react";
+import * as authService from "@/actions/auth/authservice";
+import UserCard from "@/components/UserCard";
 
-const Users = () => {
+const Users = async () => {
+  const { getAllUsers } = authService;
+  const users = await getAllUsers();
   return (
     <main className="flex flex-col items-center justify-center p-2">
       <h1 className="font-semibold text-xl text-zinc-950">
         Painel de usuarios
       </h1>
 
-      <ul className="flex flex-col gap-2">
-        <li>
-          <section className="shadow-md p-2 rounded-md flex items-center gap-1">
-            <ul className="flex justify-evenly text-sm">
-              <li> Nome do usuario</li>
-              <li> email do usuario</li>
-              <li> permissão do usuario</li>
-            </ul>
-            <Button>
-              <BadgeX size={20} color="red" />
-            </Button>
-          </section>
-        </li>
-        <li>
-          <section className="shadow-md p-2 rounded-md flex items-center gap-1">
-            <ul className="flex justify-evenly text-sm">
-              <li> Nome do usuario</li>
-              <li> email do usuario</li>
-              <li> permissão do usuario</li>
-            </ul>
-            <Button>
-              <BadgeX size={20} color="red" />
-            </Button>
-          </section>
-        </li>
-        <li>
-          <section className="shadow-md p-2 rounded-md flex items-center gap-1">
-            <ul className="flex justify-evenly text-sm">
-              <li> Nome do usuario</li>
-              <li> email do usuario</li>
-              <li> permissão do usuario</li>
-            </ul>
-            <Button>
-              <BadgeX size={20} color="red" />
-            </Button>
-          </section>
-        </li>
+      <ul className="flex flex-col gap-2 lg:w-[45%] w-[90%]">
+        {users.map(({ id, name, email, isAdmin }) => (
+          <UserCard
+            key={id}
+            id={id}
+            name={name}
+            email={email}
+            permission={isAdmin}
+          />
+        ))}
       </ul>
     </main>
   );
