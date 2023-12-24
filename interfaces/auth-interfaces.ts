@@ -23,4 +23,11 @@ interface TokenPayload{
   isAdmin:boolean
   sub?:string
 }
-export type { authData, signUpData,IToken,TokenPayload };
+
+interface IUserCard{
+  id:string
+  name:string
+  email:string
+  permission:boolean
+}
+export type { authData, signUpData,IToken,TokenPayload,IUserCard };
