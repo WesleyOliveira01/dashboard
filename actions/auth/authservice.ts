@@ -1,8 +1,8 @@
 "use server";
-import { authData, signUpData } from "@/interfaces/auth-interfaces";
+import { IToken, TokenPayload, authData, signUpData } from "@/interfaces/auth-interfaces";
 import prisma from "@/lib/db";
 import { compare, hash } from "bcrypt";
-import { sign } from "jsonwebtoken";
+import { JwtPayload, sign, verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -21,6 +21,7 @@ async function login({ email, password }: authData) {
     {
       name: user.name as string,
       email: user.email as string,
+      isAdmin:user.isAdmin
     },
     process.env.JWT_SECRET,
     {
@@ -55,4 +56,22 @@ async function createUser(signUpData: signUpData) {
   redirect("/dashboard/users");
 }
 
-export { createUser, login };
+
+
+async function getUserDetails(){
+
+  const {value:cookie} =  cookies().get("token") as any as IToken;
+ 
+  const token =  verify(cookie,process.env.JWT_SECRET) as TokenPayload
+  const simpleName = token.name.split(' ')
+  return {
+    name:token.name,
+    simpleName:simpleName[0],
+    email:token.email,
+    isAdmin:token.isAdmin,
+  }
+
+}
+
+export { createUser, getUserDetails, login };
+
