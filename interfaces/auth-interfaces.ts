@@ -10,4 +10,17 @@ interface signUpData {
   permissions: boolean;
 }
 
-export type { authData, signUpData };
+interface IToken{
+  name:string
+  path:string
+  value:string
+}
+
+interface TokenPayload{
+  name:string
+  simpleNmae:string
+  email:string
+  isAdmin:boolean
+  sub?:string
+}
+export type { authData, signUpData,IToken,TokenPayload };
