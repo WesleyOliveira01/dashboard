@@ -18,7 +18,7 @@ interface IToken{
 
 interface TokenPayload{
   name:string
-  simpleNmae:string
+  simpleName?:string
   email:string
   isAdmin:boolean
   sub?:string
