@@ -1,8 +1,13 @@
 "use server";
-import { IToken, TokenPayload, authData, signUpData } from "@/interfaces/auth-interfaces";
+import {
+  IToken,
+  TokenPayload,
+  authData,
+  signUpData,
+} from "@/interfaces/auth-interfaces";
 import prisma from "@/lib/db";
 import { compare, hash } from "bcrypt";
-import { JwtPayload, sign, verify } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -14,14 +19,14 @@ async function login({ email, password }: authData) {
   });
 
   if (!user) throw new Error("User not found");
-  const isMatch = await compare(password,user.password);
+  const isMatch = await compare(password, user.password);
   if (!isMatch) throw new Error("email ou senha invalido");
 
   const token = sign(
     {
       name: user.name as string,
       email: user.email as string,
-      isAdmin:user.isAdmin
+      isAdmin: user.isAdmin,
     },
     process.env.JWT_SECRET,
     {
@@ -56,28 +61,41 @@ async function createUser(signUpData: signUpData) {
   redirect("/dashboard/users");
 }
 
+async function getUserDetails() {
+  const { value: cookie } = cookies().get("token") as any as IToken;
 
-
-async function getUserDetails(){
-
-  const {value:cookie} =  cookies().get("token") as any as IToken;
- 
-  const token =  verify(cookie,process.env.JWT_SECRET) as TokenPayload
-  const simpleName = token.name.split(' ')
+  const token = verify(cookie, process.env.JWT_SECRET) as TokenPayload;
+  const simpleName = token.name.split(" ");
   return {
-    name:token.name,
-    simpleName:simpleName[0],
-    email:token.email,
-    isAdmin:token.isAdmin,
-  }
-
+    id: token.sub,
+    name: token.name,
+    simpleName: simpleName[0],
+    email: token.email,
+    isAdmin: token.isAdmin,
+  };
 }
 
 async function getAllUsers() {
-    const allUsers = await prisma.user.findMany({select:{id:true,name:true,email:true,isAdmin:true}})
+  const allUsers = await prisma.user.findMany({
+    select: { id: true, name: true, email: true, isAdmin: true },orderBy:{}
+  });
 
-    return allUsers
+  return allUsers;
 }
 
-export { createUser, getUserDetails, login,getAllUsers };
+async function deleteUser(id: string) {
+  const { value: cookie } = cookies().get("token") as any as IToken;
+  const token = verify(cookie, process.env.JWT_SECRET) as TokenPayload;
 
+  if(!token.isAdmin) throw new Error("Usuario sem permissão");
+  
+  await prisma.user.delete({
+    where: {
+      id,
+    },
+  });
+
+  redirect("/dashboard/users");
+}
+
+export { createUser, deleteUser, getAllUsers, getUserDetails, login };
