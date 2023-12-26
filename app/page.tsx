@@ -1,4 +1,10 @@
 import SignInForm from '../components/login/SignIn-Form';
+import { createAdmin } from '@/prisma/seed';
+
+createAdmin().catch((e) => {
+  console.error(`error: ${e.message}`)
+})
+
 const Home = () => {
   return ( 
     <main className="h-screen flex bg-zinc-50">
