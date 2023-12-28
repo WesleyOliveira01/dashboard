@@ -30,4 +30,10 @@ interface IUserCard{
   email:string
   permission:boolean
 }
-export type { authData, signUpData,IToken,TokenPayload,IUserCard };
+
+interface IPopUp{
+  isError?:boolean
+  sucess?:boolean
+  message:string
+}
+export type { authData, signUpData,IToken,TokenPayload,IUserCard,IPopUp };
