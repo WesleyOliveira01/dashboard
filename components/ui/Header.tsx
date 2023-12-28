@@ -8,6 +8,9 @@ import {
   MenubarTrigger,
 } from "./menubar";
 
+import * as authService from "@/actions/auth/authservice";
+import { TokenPayload } from "@/interfaces/auth-interfaces";
+import { LogOut, MenuIcon } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -15,12 +18,9 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "./navigation-menu";
-import { MenuIcon } from "lucide-react";
-import { TokenPayload } from "@/interfaces/auth-interfaces";
 
-
-const Header = async ({userDetails}:{userDetails:TokenPayload}) => {
-  
+const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
+  const { signOut } = authService;
   return (
     <header className="bg-zinc-950 p-4 flex justify-between items-center">
       <h1 className="text-zinc-50 lg:text-2xl font-semibold">
@@ -59,13 +59,23 @@ const Header = async ({userDetails}:{userDetails:TokenPayload}) => {
             <MenubarItem>
               <Link href="/dashboard/signUp">Cadastrar novo usuario</Link>
             </MenubarItem>
-
           </MenubarContent>
         </MenubarMenu>
         <MenubarMenu>
-          <MenubarTrigger>
-            Ola {userDetails.simpleName}
-          </MenubarTrigger>
+          <MenubarTrigger>Ola {userDetails.simpleName}</MenubarTrigger>
+          <MenubarContent>
+            <MenubarItem>
+              <button
+                onClick={async () => await signOut()}
+                className="flex w-full justify-between"
+              >
+                Sair <LogOut size={20} color="red" />
+              </button>
+            </MenubarItem>
+            <MenubarItem>
+              <Link href="/dashboard/signUp">Ver Perfil</Link>
+            </MenubarItem>
+          </MenubarContent>
         </MenubarMenu>
       </Menubar>
 
