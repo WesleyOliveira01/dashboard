@@ -1,4 +1,5 @@
 "use client";
+import { Suspense } from 'react';
 import * as authService from "@/actions/auth/authservice";
 import { authData } from "@/interfaces/auth-interfaces";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,6 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import {  ScaleLoader } from 'react-spinners';
 
 const formSchema = z.object({
   email: z.string({ required_error: "O E-mail é obrigatorio" }).email({message:"insira um email valido"}).min(5),
@@ -37,10 +39,11 @@ const SignInForm = () => {
   });
 
   const [error, setError] = useState<string | null>(null);
-
+  const [loading, setLoading] = useState<boolean>(false);
   const signIn = async (data: authData) => {
     try {
       await login(data);
+      setLoading(!loading)
     } catch (error) {
       setError(error.message);
     }
@@ -76,8 +79,9 @@ const SignInForm = () => {
           {error && <p className="text-red-600">{error}</p>}
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Button button_cn="w-full bg-zinc-950 text-zinc-50 rounded-md   ">
-            Entrar
+          <Button button_cn="w-full bg-zinc-950 text-zinc-50 rounded-md  flex items-center justiify-center gap-2">
+            <p className='w-full'>Entrar</p>
+            {loading && <ScaleLoader color="#ffffff" height={15} width={5} />}
           </Button>
         </CardFooter>
       </form>
