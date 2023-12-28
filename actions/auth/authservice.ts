@@ -77,7 +77,7 @@ async function getUserDetails() {
 
 async function getAllUsers() {
   const allUsers = await prisma.user.findMany({
-    select: { id: true, name: true, email: true, isAdmin: true },orderBy:{}
+    select: { id: true, name: true, email: true, isAdmin: true },orderBy:{created_at:"asc"}
   });
 
   return allUsers;
@@ -98,4 +98,10 @@ async function deleteUser(id: string) {
   redirect("/dashboard/users");
 }
 
-export { createUser, deleteUser, getAllUsers, getUserDetails, login };
+  
+async function signOut(){
+  cookies().delete('token')
+  redirect('/')
+}
+
+export { createUser, deleteUser, getAllUsers, getUserDetails, login,signOut };
