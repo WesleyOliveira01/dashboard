@@ -29,17 +29,6 @@ const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
 
       <Menubar className="mobile:hidden bg-zinc-950 text-zinc-50 border-none">
         <MenubarMenu>
-          <MenubarTrigger>Planos</MenubarTrigger>
-          <MenubarContent>
-            <MenubarItem>
-              <Link href="/dashboard/plans">Planos cadastrados</Link>
-            </MenubarItem>
-            <MenubarItem>
-              <Link href="/dashboard/plans/newPlan">Criar novo plano</Link>
-            </MenubarItem>
-          </MenubarContent>
-        </MenubarMenu>
-        <MenubarMenu>
           <MenubarTrigger>Cadastros de novos cliente</MenubarTrigger>
           <MenubarContent>
             <MenubarItem>
@@ -50,17 +39,32 @@ const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
             </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
-        <MenubarMenu>
-          <MenubarTrigger>Usuarios</MenubarTrigger>
-          <MenubarContent>
-            <MenubarItem>
-              <Link href="/dashboard/users">Ver todos os usuarios</Link>
-            </MenubarItem>
-            <MenubarItem>
-              <Link href="/dashboard/signUp">Cadastrar novo usuario</Link>
-            </MenubarItem>
-          </MenubarContent>
-        </MenubarMenu>
+        {userDetails.isAdmin && (
+          <>
+            <MenubarMenu>
+              <MenubarTrigger>Usuarios</MenubarTrigger>
+              <MenubarContent>
+                <MenubarItem>
+                  <Link href="/dashboard/users">Ver todos os usuarios</Link>
+                </MenubarItem>
+                <MenubarItem>
+                  <Link href="/dashboard/signUp">Cadastrar novo usuario</Link>
+                </MenubarItem>
+              </MenubarContent>
+            </MenubarMenu>
+            <MenubarMenu>
+              <MenubarTrigger>Planos</MenubarTrigger>
+              <MenubarContent>
+                <MenubarItem>
+                  <Link href="/dashboard/plans">Planos cadastrados</Link>
+                </MenubarItem>
+                <MenubarItem>
+                  <Link href="/dashboard/plans/newPlan">Criar novo plano</Link>
+                </MenubarItem>
+              </MenubarContent>
+            </MenubarMenu>
+          </>
+        )}
         <MenubarMenu>
           <MenubarTrigger>Ola {userDetails.simpleName}</MenubarTrigger>
           <MenubarContent>
