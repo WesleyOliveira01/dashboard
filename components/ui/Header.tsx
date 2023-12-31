@@ -11,13 +11,14 @@ import {
 import * as authService from "@/actions/auth/authservice";
 import { TokenPayload } from "@/interfaces/auth-interfaces";
 import { LogOut, MenuIcon } from "lucide-react";
+
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "./navigation-menu";
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./accordion";
+import { Sheet, SheetContent, SheetTrigger } from "./sheet";
 
 const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
   const { signOut } = authService;
@@ -26,7 +27,6 @@ const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
       <h1 className="text-zinc-50 lg:text-2xl font-semibold">
         <Link href="/dashboard">Dashboard</Link>
       </h1>
-
       <Menubar className="mobile:hidden bg-zinc-950 text-zinc-50 border-none">
         <MenubarMenu>
           <MenubarTrigger>Planos</MenubarTrigger>
@@ -78,75 +78,66 @@ const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
           </MenubarContent>
         </MenubarMenu>
       </Menubar>
-
-      <Menubar className="lg:hidden bg-zinc-950 text-zinc-50 border-none ">
-        <MenubarMenu>
-          <MenubarTrigger>
+      {/*mobile menu*/}
+      <div className="lg:hidden">
+        <Sheet>
+          <SheetTrigger>
             <MenuIcon color="white" size={35} />
-          </MenubarTrigger>
-          <MenubarContent className="p-4 bg-zinc-950 text-zinc-50 border-none gap-2">
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className="font-bold py-2">
-                    Planos
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="flex flex-col gap-3 p-2">
-                      <li>
-                        <Link href="/dashboard/plans">Planos cadastrados</Link>
-                      </li>
-                      <li>
-                        <Link href="/dashboard/plans/newPlan">
-                          Criar novo plano
-                        </Link>
-                      </li>
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className="font-bold py-2">
-                    Cadastros de novos cliente
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="flex flex-col gap-3 p-2">
-                      <li>
-                        <Link href="/dashboard/clients">
-                          Ver todos os cadastrados
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href="/dashboard/clients/newClient">
-                          Novo cadastro
-                        </Link>
-                      </li>
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className="font-bold py-2">
-                    Usuarios
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="flex flex-col gap-3 p-2">
-                      <li>
-                        <Link href="/dashboard/users">
-                          Ver todos os usuarios
-                        </Link>
-                      </li>
-                      <li>
-                        <Link href="/dashboard/signUp">
-                          Cadastrar novo usuario
-                        </Link>
-                      </li>
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-          </MenubarContent>
-        </MenubarMenu>
-      </Menubar>
+          </SheetTrigger>
+          <SheetContent>
+            <h1>Olá {userDetails?.simpleName}</h1>
+            <Accordion type="single">
+              <AccordionItem value="Planos">
+                <AccordionTrigger>Planos</AccordionTrigger>
+                <AccordionContent>
+                  <ul>
+                    <li>
+                      <Link href="/dashboard/plans">Planos cadastrados</Link>
+                    </li>
+                    <li>
+                      <Link href="/dashboard/plans/newPlan">
+                        Criar novo plano
+                      </Link>
+                    </li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="Usuarios">
+                <AccordionTrigger>Usuarios</AccordionTrigger>
+                <AccordionContent>
+                  <ul>
+                    <li>
+                      <Link href="/dashboard/users">Ver todos os usuarios</Link>
+                    </li>
+                    <li>
+                      <Link href="/dashboard/signUp">
+                        Cadastrar novo usuario
+                      </Link>
+                    </li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="Cadastros">
+                <AccordionTrigger>Cadastros de novos cliente</AccordionTrigger>
+                <AccordionContent>
+                  <ul>
+                    <li>
+                      <Link href="/dashboard/clients">
+                        Ver todos os cadastrados
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/dashboard/clients/newClient">
+                        Novo cadastro
+                      </Link>
+                    </li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </SheetContent>
+        </Sheet>
+      </div>
     </header>
   );
 };
