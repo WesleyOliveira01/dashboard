@@ -18,7 +18,7 @@ async function login({ email, password }: authData) {
     },
   });
 
-  if (!user) throw new Error("User not found");
+  if (!user) throw new Error("Usuario não cadastrado");
   const isMatch = await compare(password, user.password);
   if (!isMatch) throw new Error("email ou senha invalido");
 
@@ -61,6 +61,11 @@ async function createUser(signUpData: signUpData) {
   redirect("/dashboard/users");
 }
 
+async function getUserByID(id: string) {
+  const user = await prisma.user.findFirst({ where: { id } });
+  return user
+}
+
 async function getUserDetails() {
   const { value: cookie } = cookies().get("token") as any as IToken;
 
@@ -77,7 +82,8 @@ async function getUserDetails() {
 
 async function getAllUsers() {
   const allUsers = await prisma.user.findMany({
-    select: { id: true, name: true, email: true, isAdmin: true },orderBy:{created_at:"asc"}
+    select: { id: true, name: true, email: true, isAdmin: true },
+    orderBy: { created_at: "desc" },
   });
 
   return allUsers;
@@ -87,8 +93,8 @@ async function deleteUser(id: string) {
   const { value: cookie } = cookies().get("token") as any as IToken;
   const token = verify(cookie, process.env.JWT_SECRET) as TokenPayload;
 
-  if(!token.isAdmin) throw new Error("Usuario sem permissão");
-  
+  if (!token.isAdmin) throw new Error("Usuario sem permissão");
+
   await prisma.user.delete({
     where: {
       id,
@@ -98,10 +104,9 @@ async function deleteUser(id: string) {
   redirect("/dashboard/users");
 }
 
-  
-async function signOut(){
-  cookies().delete('token')
-  redirect('/')
+async function signOut() {
+  cookies().delete("token");
+  redirect("/");
 }
 
-export { createUser, deleteUser, getAllUsers, getUserDetails, login,signOut };
+export { createUser, deleteUser, getAllUsers, getUserDetails, login, signOut,getUserByID };
