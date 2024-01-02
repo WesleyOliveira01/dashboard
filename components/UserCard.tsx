@@ -24,15 +24,15 @@ const UserCard = ({ name, email, permission, id }: IUserCard) => {
   return (
     <>
       <li className="w-full">
-        <section className="shadow-md p-2 rounded-md flex justify-between items-center">
+        <section className="shadow-md lg:p-2 rounded-md flex justify-between items-center">
           <Link href={`/dashboard/users/${id}`}>
-            <ul className="flex justify-between  gap-5 px-4 font-semibold">
+            <ul className="flex justify-between mobile:text-sm  gap-5 px-4 font-semibold">
               <li>{name}</li>
-              <li>{email}</li>
+              <li className="mobile:hidden">{email}</li>
               <li>{permission ? "administrador" : "Usuario padrao"}</li>
             </ul>
           </Link>
-          <Button  onClick={async () => await removeUser(id)}>
+          <Button onClick={async () => await removeUser(id)}>
             <BadgeX size={20} color="red" />
           </Button>
         </section>

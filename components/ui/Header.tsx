@@ -24,7 +24,7 @@ const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
   const { signOut } = authService;
   return (
     <header className="bg-zinc-950 p-4 flex justify-between items-center">
-      <h1 className="text-zinc-50 lg:text-2xl font-semibold">
+      <h1 className="text-zinc-50 lg:text-2xl text-xl font-semibold">
         <Link href="/dashboard">Dashboard</Link>
       </h1>
       <Menubar className="mobile:hidden bg-zinc-950 text-zinc-50 border-none">
@@ -85,12 +85,12 @@ const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
             <MenuIcon color="white" size={35} />
           </SheetTrigger>
           <SheetContent>
-            <h1>Olá {userDetails?.simpleName}</h1>
-            <Accordion type="single">
+            <h1 className="font-semibold text-xl">Olá {userDetails?.simpleName}</h1>
+            <Accordion type="single" collapsible>
               <AccordionItem value="Planos">
                 <AccordionTrigger>Planos</AccordionTrigger>
-                <AccordionContent>
-                  <ul>
+                <AccordionContent >
+                  <ul className="flex flex-col gap-3 [&>*]:font-semibold">
                     <li>
                       <Link href="/dashboard/plans">Planos cadastrados</Link>
                     </li>
@@ -105,7 +105,7 @@ const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
               <AccordionItem value="Usuarios">
                 <AccordionTrigger>Usuarios</AccordionTrigger>
                 <AccordionContent>
-                  <ul>
+                  <ul className="flex flex-col gap-3 [&>*]:font-semibold">
                     <li>
                       <Link href="/dashboard/users">Ver todos os usuarios</Link>
                     </li>
@@ -120,7 +120,7 @@ const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
               <AccordionItem value="Cadastros">
                 <AccordionTrigger>Cadastros de novos cliente</AccordionTrigger>
                 <AccordionContent>
-                  <ul>
+                  <ul className="flex flex-col gap-3 [&>*]:font-semibold">
                     <li>
                       <Link href="/dashboard/clients">
                         Ver todos os cadastrados

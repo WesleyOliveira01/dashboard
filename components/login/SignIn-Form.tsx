@@ -1,5 +1,4 @@
 "use client";
-import { Suspense } from 'react';
 import * as authService from "@/actions/auth/authservice";
 import { authData } from "@/interfaces/auth-interfaces";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,6 +6,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { useState } from "react";
+import { ScaleLoader } from "react-spinners";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import {
@@ -16,10 +16,12 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import {  ScaleLoader } from 'react-spinners';
 
 const formSchema = z.object({
-  email: z.string({ required_error: "O E-mail é obrigatorio" }).email({message:"insira um email valido"}).min(5),
+  email: z
+    .string({ required_error: "O E-mail é obrigatorio" })
+    .email({ message: "insira um email valido" })
+    .min(5),
   password: z
     .string({ required_error: "A senha é obrigatorio" })
     .min(8, { message: "a senha deve ter pelo menos 8 digitos" }),
@@ -43,7 +45,7 @@ const SignInForm = () => {
   const signIn = async (data: authData) => {
     try {
       await login(data);
-      setLoading(!loading)
+      setLoading(!loading);
     } catch (error) {
       setError(error.message);
     }
@@ -80,8 +82,11 @@ const SignInForm = () => {
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button button_cn="w-full bg-zinc-950 text-zinc-50 rounded-md  flex items-center justiify-center gap-2">
-            <p className='w-full'>Entrar</p>
-            {loading && <ScaleLoader color="#ffffff" height={15} width={5} />}
+            {loading ? (
+              <ScaleLoader color="#ffffff" height={15} width={5} />
+            ) : (
+              <p className="w-full">Entrar</p>
+            )}
           </Button>
         </CardFooter>
       </form>
