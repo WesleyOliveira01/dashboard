@@ -1,8 +1,11 @@
+import Container  from "@/components/ui/Container";
+import NewPlanForm from '@/components/newPlanForm';
+
 const newPlan = () => {
     return ( 
-        <main>
-            new plan
-        </main>
+        <Container>
+            <NewPlanForm />
+        </Container>
      );
 }
  
