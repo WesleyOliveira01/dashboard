@@ -13,7 +13,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import * as authService from "@/actions/auth/authservice";
+import * as planService from "@/actions/plans/planService";
 import { signUpData } from "@/interfaces/auth-interfaces";
 import { Textarea } from "./ui/textarea";
 
@@ -42,9 +42,9 @@ const NewPlanForm = () => {
     reValidateMode: "onChange",
   });
 
-  const { createUser } = authService;
+  const { createPlan } = planService;
   const onFormSubmit = async (formData: signUpData) => {
-    await createUser(formData);
+    await createPlan(formData)
   };
   return (
     <Card className="lg:w-[50%] w-[95%]">
