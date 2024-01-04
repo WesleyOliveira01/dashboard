@@ -3,24 +3,27 @@ import * as authService from "@/actions/auth/authservice";
 import { IUserCard } from "@/interfaces/auth-interfaces";
 import { BadgeX } from "lucide-react";
 import Link from "next/link";
-
-import { useState } from "react";
 import Button from "./ui/Button";
-import PopUp from "./ui/PopUp";
+import { useToast } from "./ui/use-toast";
 
 const UserCard = ({ name, email, permission, id }: IUserCard) => {
   const { deleteUser } = authService;
-  const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast()
   const removeUser = async (id: string) => {
     try {
       await deleteUser(id);
-    } catch (error) {
-      setError(error.message);
-      setTimeout(() => {
-        setError(null);
-      }, 3000);
+      toast({
+        description:"Usuario removido com sucesso",
+      })
+    } catch (e) {
+      toast({
+        description:e.message,
+        variant: "destructive"
+      })
     }
   };
+
+  
   return (
     <>
       <li className="w-full">
@@ -37,7 +40,6 @@ const UserCard = ({ name, email, permission, id }: IUserCard) => {
           </Button>
         </section>
       </li>
-      {error && <PopUp isError={true} message={error} />}
     </>
   );
 };
