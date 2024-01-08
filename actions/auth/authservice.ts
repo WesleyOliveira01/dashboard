@@ -63,7 +63,7 @@ async function createUser(signUpData: signUpData) {
 
 async function getUserByID(id: string) {
   const user = await prisma.user.findFirst({ where: { id } });
-  return user
+  return user;
 }
 
 async function getUserDetails() {
@@ -100,8 +100,6 @@ async function deleteUser(id: string) {
       id,
     },
   });
-
-  redirect("/dashboard/users");
 }
 
 async function signOut() {
@@ -109,4 +107,12 @@ async function signOut() {
   redirect("/");
 }
 
-export { createUser, deleteUser, getAllUsers, getUserDetails, login, signOut,getUserByID };
+export {
+  createUser,
+  deleteUser,
+  getAllUsers,
+  getUserByID,
+  getUserDetails,
+  login,
+  signOut,
+};

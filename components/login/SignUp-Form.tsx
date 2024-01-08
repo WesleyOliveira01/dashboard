@@ -16,7 +16,7 @@ import * as z from "zod";
 import * as authService  from "@/actions/auth/authservice";
 import { signUpData } from "@/interfaces/auth-interfaces";
 import { useToast } from "../ui/use-toast";
-
+import {useRouter} from "next/navigation"
 const formSchema = z.object({
   name: z
     .string({ required_error: "O nome é obrigatorio" })
@@ -49,13 +49,14 @@ const SignUpForm = () => {
   });
 
   const { toast } = useToast()
-
+  const router = useRouter()
   const {createUser } = authService
   const onFormSubmit = async (formData: signUpData) => {
     await createUser(formData);
     toast({
       description:"Usuario criado com sucesso",
     })
+    router.refresh()
   };
   return (
     <Card className="lg:w-[50%] w-[95%]">
