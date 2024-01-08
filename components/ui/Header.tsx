@@ -18,7 +18,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./accordion";
-import { Sheet, SheetContent, SheetTrigger } from "./sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "./sheet";
 
 const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
   const { signOut } = authService;
@@ -85,11 +85,23 @@ const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
             <MenuIcon color="white" size={35} />
           </SheetTrigger>
           <SheetContent>
-            <h1 className="font-semibold text-xl">Olá {userDetails?.simpleName}</h1>
+            <SheetHeader className="flex-row justify-between pt-5 items-center">
+              
+                <h1 className="font-semibold text-xl">
+                  Olá {userDetails?.simpleName}
+                </h1>
+                <button
+                  onClick={async () => await signOut()}
+                  className="flex justify-between"
+                >
+                   <LogOut size={20} color="red" />
+                </button>
+              
+            </SheetHeader>
             <Accordion type="single" collapsible>
               <AccordionItem value="Planos">
                 <AccordionTrigger>Planos</AccordionTrigger>
-                <AccordionContent >
+                <AccordionContent>
                   <ul className="flex flex-col gap-3 [&>*]:font-semibold">
                     <li>
                       <Link href="/dashboard/plans">Planos cadastrados</Link>
