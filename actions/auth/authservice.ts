@@ -47,6 +47,17 @@ async function login({ email, password }: authData) {
 }
 
 async function createUser(signUpData: signUpData) {
+  const { value: cookie } = cookies().get("token") as any as IToken;
+  const token = verify(cookie, process.env.JWT_SECRET) as TokenPayload;
+
+  if (!token.isAdmin) throw new Error("Usuario sem permissão");
+
+  const hasUser = await prisma.user.findFirst({
+    where: { email: signUpData.email },
+  });
+
+  if (hasUser) throw new Error("Usuario já cadastrado");
+  
   const hashPassword = await hash(signUpData.password, 10);
 
   const newUser = await prisma.user.create({

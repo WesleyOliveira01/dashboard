@@ -13,10 +13,10 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import * as authService  from "@/actions/auth/authservice";
+import * as authService from "@/actions/auth/authservice";
 import { signUpData } from "@/interfaces/auth-interfaces";
+import { useRouter } from "next/navigation";
 import { useToast } from "../ui/use-toast";
-import {useRouter} from "next/navigation"
 const formSchema = z.object({
   name: z
     .string({ required_error: "O nome é obrigatorio" })
@@ -48,16 +48,25 @@ const SignUpForm = () => {
     reValidateMode: "onChange",
   });
 
-  const { toast } = useToast()
-  const router = useRouter()
-  const {createUser } = authService
+  const { toast } = useToast();
+  const router = useRouter();
+  const { createUser } = authService;
+
   const onFormSubmit = async (formData: signUpData) => {
-    await createUser(formData);
-    toast({
-      description:"Usuario criado com sucesso",
-    })
-    router.refresh()
+    try {
+      await createUser(formData);
+      toast({
+        description: "Usuario criado com sucesso",
+      });
+      router.refresh();
+    } catch (error) {
+      toast({
+        description: error.message,
+        variant:"destructive"
+      });
+    }
   };
+
   return (
     <Card className="lg:w-[50%] w-[95%]">
       <form onSubmit={handleSubmit(onFormSubmit)}>
