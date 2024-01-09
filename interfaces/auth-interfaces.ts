@@ -4,6 +4,7 @@ interface authData {
 }
 
 interface signUpData {
+  id?:string
   name: string;
   email: string;
   password: string;
@@ -36,4 +37,9 @@ interface IPopUp{
   sucess?:boolean
   message:string
 }
-export type { authData, signUpData,IToken,TokenPayload,IUserCard,IPopUp };
+
+interface UserProps extends signUpData {
+    id: string;
+    
+}
+export type { authData, signUpData,IToken,TokenPayload,IUserCard,IPopUp,UserProps };
