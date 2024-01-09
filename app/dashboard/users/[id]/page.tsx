@@ -1,15 +1,9 @@
 import * as authService from "@/actions/auth/authservice";
 import Button from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { History } from "lucide-react";
-
+import UpdateUsersForm from "@/components/EditUserForm";
 
 const UserDetails = async ({ params }: { params: { id: string } }) => {
   const { getUserByID } = authService;
@@ -31,16 +25,7 @@ const UserDetails = async ({ params }: { params: { id: string } }) => {
               <History size={20} color="#09090B" />
             </Button>
           </DialogTrigger>
-          <DialogContent>
-            <form action="">
-              <h1>dados do usuario</h1>
-            </form>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button type="submit">Salvar alteraçôes</Button>
-              </DialogClose>
-            </DialogFooter>
-          </DialogContent>
+          <UpdateUsersForm user={user} />
         </Dialog>
       </section>
       <ul className="lg:w-[70%] w-full shadow-md p-4 rounded-md [&>*]:p-2 [&>*]:flex [&>*]:gap-2">

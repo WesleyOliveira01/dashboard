@@ -57,7 +57,7 @@ async function createUser(signUpData: signUpData) {
   });
 
   if (hasUser) throw new Error("Usuario já cadastrado");
-  
+
   const hashPassword = await hash(signUpData.password, 10);
 
   const newUser = await prisma.user.create({
@@ -118,6 +118,30 @@ async function signOut() {
   redirect("/");
 }
 
+async function updateUser(userData) {
+  const { value: cookie } = cookies().get("token") as any as IToken;
+  const token = verify(cookie, process.env.JWT_SECRET) as TokenPayload;
+
+  if (!token.isAdmin) throw new Error("Usuario sem permissão");
+
+  const user = await prisma.user.findFirst({ where: { id: userData.id } });
+
+  const password =
+    userData.password.length == 0
+      ? user.password
+      : await hash(userData.password, 10);
+  const newUserData = {
+    name: userData.name,
+    email: userData.email,
+    isAdmin: userData.permissions,
+    password: password,
+  };
+
+  await prisma.user.update({
+    where: { id: userData.id },
+    data: { name:newUserData.name,email:newUserData.email,isAdmin:newUserData.isAdmin,password:newUserData.password },
+  });
+}
 export {
   createUser,
   deleteUser,
@@ -126,4 +150,5 @@ export {
   getUserDetails,
   login,
   signOut,
+  updateUser,
 };
