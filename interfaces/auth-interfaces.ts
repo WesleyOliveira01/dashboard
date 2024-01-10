@@ -25,17 +25,5 @@ interface TokenPayload{
   sub?:string
 }
 
-interface IUserCard{
-  id:string
-  name:string
-  email:string
-  permission:boolean
-}
 
-
-
-interface UserProps extends signUpData {
-    id: string;
-    
-}
-export type { authData, signUpData,IToken,TokenPayload,IUserCard,UserProps };
+export type { authData, signUpData,IToken,TokenPayload};

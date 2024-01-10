@@ -43,7 +43,6 @@ interface UserProps {
 const UpdateUsersForm = ({ user }: UserProps) => {
   const {
     register,
-    control,
     handleSubmit,
     formState: { errors },
   } = useForm<z.infer<typeof formSchema>>({

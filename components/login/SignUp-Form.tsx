@@ -13,7 +13,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import * as authService from "@/actions/auth/authservice";
+import * as userService from "@/actions/User/UserService";
 import { signUpData } from "@/interfaces/auth-interfaces";
 import { useRouter } from "next/navigation";
 import { useToast } from "../ui/use-toast";
@@ -50,7 +50,7 @@ const SignUpForm = () => {
 
   const { toast } = useToast();
   const router = useRouter();
-  const { createUser } = authService;
+  const { createUser } = userService;
 
   const onFormSubmit = async (formData: signUpData) => {
     try {

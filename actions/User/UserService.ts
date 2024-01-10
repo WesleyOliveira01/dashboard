@@ -3,7 +3,7 @@ import { hash } from "bcrypt";
 import { verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-
+import prisma from "@/lib/db";
 
 async function createUser(signUpData: signUpData) {
     const { value: cookie } = cookies().get("token") as any as IToken;
