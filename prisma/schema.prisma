@@ -25,6 +25,7 @@ model Plan{
   name String
   description String
   price String
+  fidelity Boolean
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 }
