@@ -44,7 +44,7 @@ const NewPlanForm = () => {
 
   const { createPlan } = planService;
   const onFormSubmit = async (formData: signUpData) => {
-    await createPlan(formData)
+    await createPlan(formData);
   };
   return (
     <Card className="lg:w-[50%] w-[95%]">
@@ -64,7 +64,7 @@ const NewPlanForm = () => {
             </div>
             <div className="flex flex-col space-y-1.5">
               <Input
-                {...register("valor",{setValueAs:(value) => Number(value)})}
+                {...register("valor", { setValueAs: (value) => Number(value) })}
                 label="Valor do plano"
                 forElement="valor"
                 error_message={errors?.valor?.message}

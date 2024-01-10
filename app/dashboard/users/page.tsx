@@ -1,4 +1,4 @@
-import * as authService from "@/actions/auth/authservice";
+import * as userService from "@/actions/User/UserService";
 import UserCard from "@/components/UserCard";
 import Container from "@/components/ui/Container"
 import { UserRoundPlus } from "lucide-react";
@@ -6,7 +6,7 @@ import Link from "next/link";
 
 
 const Users = async () => {
-  const { getAllUsers } = authService;
+  const { getAllUsers } = userService;
   const users = await getAllUsers();
   return (
     

@@ -1,5 +1,5 @@
 "use client";
-import * as authService from "@/actions/auth/authservice";
+import * as userService from "@/actions/User/UserService";
 import { IUserCard } from "@/interfaces/auth-interfaces";
 import { BadgeX } from "lucide-react";
 import Link from "next/link";
@@ -8,7 +8,7 @@ import { useToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
 
 const UserCard = ({ name, email, permission, id }: IUserCard) => {
-  const { deleteUser } = authService;
+  const { deleteUser } = userService;
   const { toast } = useToast()
   const router = useRouter()
   const removeUser = async (id: string) => {

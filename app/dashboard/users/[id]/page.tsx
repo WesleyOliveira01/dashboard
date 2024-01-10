@@ -1,4 +1,4 @@
-import * as authService from "@/actions/auth/authservice";
+import * as userService from "@/actions/User/UserService";
 import Button from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
@@ -6,7 +6,7 @@ import { History } from "lucide-react";
 import UpdateUsersForm from "@/components/EditUserForm";
 
 const UserDetails = async ({ params }: { params: { id: string } }) => {
-  const { getUserByID } = authService;
+  const { getUserByID } = userService;
   const id = params.id;
   const user = await getUserByID(id);
 

@@ -32,14 +32,10 @@ interface IUserCard{
   permission:boolean
 }
 
-interface IPopUp{
-  isError?:boolean
-  sucess?:boolean
-  message:string
-}
+
 
 interface UserProps extends signUpData {
     id: string;
     
 }
-export type { authData, signUpData,IToken,TokenPayload,IUserCard,IPopUp,UserProps };
+export type { authData, signUpData,IToken,TokenPayload,IUserCard,UserProps };

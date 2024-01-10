@@ -4,7 +4,7 @@ import Input from "./ui/Input";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import * as authService from "@/actions/auth/authservice";
+import * as userService from "@/actions/User/UserService";
 import { signUpData } from "@/interfaces/auth-interfaces";
 import Button from "./ui/Button";
 import { DialogClose, DialogContent } from "./ui/dialog";
@@ -52,7 +52,7 @@ const UpdateUsersForm = ({ user }: UserProps) => {
     reValidateMode: "onChange",
   });
 
-  const {updateUser} = authService
+  const {updateUser} = userService
 
   const { toast } = useToast();
 
