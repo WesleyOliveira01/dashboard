@@ -1,5 +1,5 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import Button from "./ui/Button";
 import Input from "./ui/Input";
 import {
@@ -14,8 +14,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
 import * as planService from "@/actions/plans/planService";
-import { signUpData } from "@/interfaces/auth-interfaces";
 import { Textarea } from "./ui/textarea";
+
+import { Iplan } from "@/interfaces/plan-interface";
+import { useRouter } from "next/navigation";
+import { NumericFormat } from "react-number-format";
+import { useToast } from "./ui/use-toast";
 
 const formSchema = z.object({
   name: z
@@ -24,9 +28,7 @@ const formSchema = z.object({
   descricao: z
     .string({ required_error: "A descrição do plano é obrigatoria" })
     .min(5, { message: "insira uma descrição valida" }),
-  valor: z
-    .number({ required_error: "O valor do plano é obrigatorio" })
-    .min(1, { message: "insira um valor valido" }),
+  valor: z.string().min(1, { message: "insira um valor valido" }),
   fidelidade: z.boolean(),
 });
 
@@ -41,10 +43,23 @@ const NewPlanForm = () => {
     mode: "all",
     reValidateMode: "onChange",
   });
+  const { toast } = useToast();
 
+  const router = useRouter();
   const { createPlan } = planService;
-  const onFormSubmit = async (formData: signUpData) => {
-    await createPlan(formData);
+  const onFormSubmit = async (formData: Iplan) => {
+    try {
+      await createPlan(formData);
+      toast({
+        description: "Plano criado com sucesso",
+      });
+      router.push("/dashboard/plans");
+    } catch (error) {
+      toast({
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   };
   return (
     <Card className="lg:w-[50%] w-[95%]">
@@ -63,18 +78,34 @@ const NewPlanForm = () => {
               />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Input
-                {...register("valor", { setValueAs: (value) => Number(value) })}
-                label="Valor do plano"
-                forElement="valor"
-                error_message={errors?.valor?.message}
+              <label htmlFor="valor" className="block font-semibold">
+                Valor do Plano
+              </label>
+              <Controller
+                name="valor"
+                control={control}
+                render={({ field }) => (
+                  <NumericFormat
+                    {...field}
+                    className="outline-none p-3 focus:border-zinc-200 focus:ring-0 border border-zinc-200 rounded-md"
+                    prefix="R$"
+                    thousandSeparator
+                    onValueChange={(values) => {
+                      field.onChange(values.value);
+                    }}
+                  />
+                )}
               />
+              {errors?.valor && (
+                <p className="text-red-500">{errors?.valor?.message}</p>
+              )}
             </div>
             <div className="flex flex-col space-y-1.5">
               <label className="block font-semibold" htmlFor="descricao">
                 Descrição do plano
               </label>
               <Textarea
+                className="focus:border-none"
                 id="descricao"
                 {...register("descricao")}
                 placeholder="Insira a descrição do plano"
@@ -89,6 +120,7 @@ const NewPlanForm = () => {
                 type="checkbox"
                 forElement="fidelidade"
                 label="Com fidelidade"
+                input_cn="checked:text-zinc-950"
                 error_message={errors?.fidelidade?.message}
               />
             </div>
