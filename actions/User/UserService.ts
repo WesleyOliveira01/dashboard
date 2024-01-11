@@ -1,3 +1,4 @@
+'use server'
 import { IToken, TokenPayload, signUpData } from "@/interfaces/auth-interfaces";
 import { hash } from "bcrypt";
 import { verify } from "jsonwebtoken";

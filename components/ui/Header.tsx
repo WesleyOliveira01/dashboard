@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import Link from "next/link";
 import {
   Menubar,
@@ -9,9 +9,9 @@ import {
 } from "./menubar";
 
 import * as authService from "@/actions/auth/authservice";
-import { TokenPayload } from "@/interfaces/auth-interfaces";
 import { LogOut, MenuIcon } from "lucide-react";
 
+import { IuserDetails } from "@/interfaces/user-interfaces";
 import {
   Accordion,
   AccordionContent,
@@ -20,7 +20,7 @@ import {
 } from "./accordion";
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "./sheet";
 
-const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
+const Header =  ({ userDetails }: { userDetails: IuserDetails }) => {
   const { signOut } = authService;
   return (
     <header className="bg-zinc-950 p-4 flex justify-between items-center">
@@ -29,17 +29,6 @@ const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
       </h1>
       <Menubar className="mobile:hidden bg-zinc-950 text-zinc-50 border-none">
         <MenubarMenu>
-          <MenubarTrigger>Planos</MenubarTrigger>
-          <MenubarContent>
-            <MenubarItem>
-              <Link href="/dashboard/plans">Planos cadastrados</Link>
-            </MenubarItem>
-            <MenubarItem>
-              <Link href="/dashboard/plans/newPlan">Criar novo plano</Link>
-            </MenubarItem>
-          </MenubarContent>
-        </MenubarMenu>
-        <MenubarMenu>
           <MenubarTrigger>Cadastros de novos cliente</MenubarTrigger>
           <MenubarContent>
             <MenubarItem>
@@ -47,6 +36,18 @@ const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
             </MenubarItem>
             <MenubarItem>
               <Link href="/dashboard/clients/newClient">Novo cadastro</Link>
+            </MenubarItem>
+          </MenubarContent>
+        </MenubarMenu>
+       {userDetails?.isAdmin && <>
+        <MenubarMenu>
+          <MenubarTrigger>Planos</MenubarTrigger>
+          <MenubarContent>
+            <MenubarItem>
+              <Link href="/dashboard/plans">Planos cadastrados</Link>
+            </MenubarItem>
+            <MenubarItem>
+              <Link href="/dashboard/plans/newPlan">Criar novo plano</Link>
             </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
@@ -61,7 +62,10 @@ const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
             </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
-        <MenubarMenu>
+        
+       </>
+       }
+       <MenubarMenu>
           <MenubarTrigger>Ola {userDetails.simpleName}</MenubarTrigger>
           <MenubarContent>
             <MenubarItem>
@@ -73,7 +77,9 @@ const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
               </button>
             </MenubarItem>
             <MenubarItem>
-              <Link href="/dashboard/signUp">Ver Perfil</Link>
+              <Link href={`/dashboard/users/${userDetails?.id}`}>
+                Ver Perfil
+              </Link>
             </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
@@ -86,20 +92,19 @@ const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
           </SheetTrigger>
           <SheetContent>
             <SheetHeader className="flex-row justify-between pt-5 items-center">
-              
-                <h1 className="font-semibold text-xl">
-                  Olá {userDetails?.simpleName}
-                </h1>
-                <button
-                  onClick={async () => await signOut()}
-                  className="flex justify-between"
-                >
-                   <LogOut size={20} color="red" />
-                </button>
-              
+              <h1 className="font-semibold text-xl">
+                Olá {userDetails?.simpleName}
+              </h1>
+              <button
+                onClick={async () => await signOut()}
+                className="flex justify-between"
+              >
+                <LogOut size={20} color="red" />
+              </button>
             </SheetHeader>
             <Accordion type="single" collapsible>
-              <AccordionItem value="Planos">
+              {userDetails?.isAdmin && <>
+                <AccordionItem value="Planos">
                 <AccordionTrigger>Planos</AccordionTrigger>
                 <AccordionContent>
                   <ul className="flex flex-col gap-3 [&>*]:font-semibold">
@@ -129,6 +134,7 @@ const Header = async ({ userDetails }: { userDetails: TokenPayload }) => {
                   </ul>
                 </AccordionContent>
               </AccordionItem>
+              </>}
               <AccordionItem value="Cadastros">
                 <AccordionTrigger>Cadastros de novos cliente</AccordionTrigger>
                 <AccordionContent>

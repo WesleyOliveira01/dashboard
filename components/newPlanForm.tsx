@@ -53,7 +53,7 @@ const NewPlanForm = () => {
       toast({
         description: "Plano criado com sucesso",
       });
-      router.push("/dashboard/plans");
+      router.refresh()
     } catch (error) {
       toast({
         description: error.message,
