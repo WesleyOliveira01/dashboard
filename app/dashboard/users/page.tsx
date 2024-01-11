@@ -21,7 +21,7 @@ const Users = async () => {
             className="flex font-semibold lg:gap-2"
           >
             <span className="hidden lg:block">Cadastrar novo usuario</span>
-            <UserRoundPlus size={20} color="#09090B" />
+            <UserRoundPlus size={20} color="green" />
           </Link>
         </section>
 
