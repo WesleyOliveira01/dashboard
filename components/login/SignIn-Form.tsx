@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { useState } from "react";
-import { ScaleLoader } from "react-spinners";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import {
@@ -17,6 +16,7 @@ import {
   CardTitle,
 } from "../ui/card";
 
+import ReactLoading from "react-loading";
 const formSchema = z.object({
   email: z
     .string({ required_error: "O E-mail é obrigatorio" })
@@ -83,7 +83,12 @@ const SignInForm = () => {
         <CardFooter className="flex justify-between">
           <Button button_cn="w-full bg-zinc-950 text-zinc-50 rounded-md  flex items-center justiify-center gap-2">
             {loading ? (
-              <ScaleLoader color="#ffffff" height={15} width={5} />
+              <ReactLoading
+                color="#09090B"
+                type="spin"
+                width={50}
+                height={20}
+              />
             ) : (
               <p className="w-full">Entrar</p>
             )}
