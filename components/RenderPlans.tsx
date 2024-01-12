@@ -15,10 +15,15 @@ import { useRouter } from "next/navigation";
 import { useToast } from "./ui/use-toast";
 
 import * as planService from "@/actions/plans/planService";
+import { DialogTrigger } from "@/components/ui/dialog";
+import EditPlanForm from "./editPlanForm";
+import { Dialog } from "./ui/dialog";
+
 const RenderPlans = ({ plans }: { plans: Plan[] }) => {
   const { deletePlan } = planService;
   const { toast } = useToast();
   const router = useRouter();
+
   const removePlan = async (id: string) => {
     try {
       await deletePlan(id);
@@ -38,7 +43,9 @@ const RenderPlans = ({ plans }: { plans: Plan[] }) => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead><span className="mobile:hidden">Com</span> fidelidade</TableHead>
+            <TableHead>
+              <span className="mobile:hidden">Com</span> fidelidade
+            </TableHead>
             <TableHead>Nome</TableHead>
             <TableHead>Valor</TableHead>
             <TableHead className="mobile:hidden">Descrição</TableHead>
@@ -50,11 +57,18 @@ const RenderPlans = ({ plans }: { plans: Plan[] }) => {
               <TableCell>{plan.fidelity ? "Sim" : "Não"}</TableCell>
               <TableCell>{plan.name}</TableCell>
               <TableCell>{plan.price}</TableCell>
-              <TableCell className="mobile:hidden">{plan.description}</TableCell>
+              <TableCell className="mobile:hidden">
+                {plan.description}
+              </TableCell>
               <TableCell>
-                <Button>
-                  <PencilRuler color="green" />
-                </Button>{" "}
+                <Dialog>
+                  <DialogTrigger>
+                    <Button>
+                      <PencilRuler color="green" />
+                    </Button>
+                  </DialogTrigger>
+                  <EditPlanForm plan={plan} />
+                </Dialog>
                 <Button
                   onClick={async () => {
                     await removePlan(plan.id);
