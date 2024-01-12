@@ -1,17 +1,12 @@
 "use server"
+import { Iplan } from "@/interfaces/plan-interface";
 import prisma from "@/lib/db";
-import { IToken, TokenPayload } from "@/interfaces/auth-interfaces";
-import { Iplan } from "@/interfaces/plan-interface"
-import { verify } from "jsonwebtoken";
-import { cookies } from "next/headers";
+import { verifyToken } from "../utils";
 import { redirect } from "next/navigation";
+import { Plan } from "@prisma/client";
 
 async function createPlan(planData:Iplan) {
-    const { value: cookie } = cookies().get("token") as any as IToken;
-    const token = verify(cookie, process.env.JWT_SECRET) as TokenPayload;
-  
-    if (!token.isAdmin) throw new Error("Usuario sem permissão");
-
+    await verifyToken()
     const hasPlan = await prisma.plan.findFirst({where:{name:planData.name}})
 
     if(hasPlan)throw new Error("Plano já cadastrado");
@@ -32,11 +27,7 @@ async function getAllPlans(){
 }
 
 async function deletePlan(id:string){
-    const { value: cookie } = cookies().get("token") as any as IToken;
-    const token = verify(cookie, process.env.JWT_SECRET) as TokenPayload;
-  
-    if (!token.isAdmin) throw new Error("Usuario sem permissão");
-
+    await verifyToken()
     await prisma.plan.delete({
         where: {
           id,
@@ -44,4 +35,15 @@ async function deletePlan(id:string){
       });
 }
 
-export {createPlan,getAllPlans,deletePlan}
+async function editPlan(plan:Plan) {
+     verifyToken();
+     console.log(plan)
+     await prisma.plan.update({where:{id:plan.id},data:{
+        name:plan.name,
+        price:plan.price,
+        description:plan.description,
+        fidelity:plan.fidelity
+     }})
+}
+export { createPlan, deletePlan, getAllPlans,editPlan };
+

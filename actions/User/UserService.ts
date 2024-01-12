@@ -1,17 +1,14 @@
 'use server'
 import { IToken, TokenPayload, signUpData } from "@/interfaces/auth-interfaces";
+import prisma from "@/lib/db";
+import { verifyToken } from "../utils";
 import { hash } from "bcrypt";
 import { verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import prisma from "@/lib/db";
 
 async function createUser(signUpData: signUpData) {
-    const { value: cookie } = cookies().get("token") as any as IToken;
-    const token = verify(cookie, process.env.JWT_SECRET) as TokenPayload;
-  
-    if (!token.isAdmin) throw new Error("Usuario sem permissão");
-  
+    await verifyToken()
     const hasUser = await prisma.user.findFirst({
       where: { email: signUpData.email },
     });
@@ -39,7 +36,6 @@ async function createUser(signUpData: signUpData) {
   
   async function getUserDetails() {
     const { value: cookie } = cookies().get("token") as any as IToken;
-  
     const token = verify(cookie, process.env.JWT_SECRET) as TokenPayload;
     const simpleName = token.name.split(" ");
     return {
@@ -61,10 +57,7 @@ async function createUser(signUpData: signUpData) {
   }
   
   async function deleteUser(id: string) {
-    const { value: cookie } = cookies().get("token") as any as IToken;
-    const token = verify(cookie, process.env.JWT_SECRET) as TokenPayload;
-  
-    if (!token.isAdmin) throw new Error("Usuario sem permissão");
+    await verifyToken()
   
     await prisma.user.delete({
       where: {
@@ -74,10 +67,7 @@ async function createUser(signUpData: signUpData) {
   }
 
   async function updateUser(userData) {
-    const { value: cookie } = cookies().get("token") as any as IToken;
-    const token = verify(cookie, process.env.JWT_SECRET) as TokenPayload;
-  
-    if (!token.isAdmin) throw new Error("Usuario sem permissão");
+    verifyToken()
   
     const user = await prisma.user.findFirst({ where: { id: userData.id } });
   
@@ -104,10 +94,10 @@ async function createUser(signUpData: signUpData) {
   }
 
   export {
-    createUser,
-    deleteUser,
-    getAllUsers,
-    getUserByID,
-    getUserDetails,
-    updateUser
-  };
+  createUser,
+  deleteUser,
+  getAllUsers,
+  getUserByID,
+  getUserDetails,
+  updateUser
+};
