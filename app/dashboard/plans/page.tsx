@@ -15,9 +15,11 @@ const Plans = async () => {
     <Container>
       <section className="p-3 font-semibold flex justify-between w-full">
         <h1 className="text-xl">Planos cadastrados</h1>
-        <h1 className="cursor-pointer">
-          <Link href="/dashboard/plans/newPlan"><span className="mobile:hidden">Cadastrar novo plano</span> <BadgePlus color="green" /></Link>
-        </h1>
+        
+          <Link href="/dashboard/plans/newPlan" className="flex gap-2">
+            <span className="mobile:hidden">Cadastrar novo plano</span>        <BadgePlus color="green" />
+          </Link>
+        
       </section>
       {plans.length == 0 ? <Loading /> : <RenderPlans plans={plans} />}
     </Container>
