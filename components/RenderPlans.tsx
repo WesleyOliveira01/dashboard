@@ -17,13 +17,11 @@ import * as planService from "@/actions/plans/planService";
 import { DialogTrigger } from "@/components/ui/dialog";
 import EditPlanForm from "./editPlanForm";
 import { Dialog } from "./ui/dialog";
-import { Iplan } from "@/interfaces/plan-interface";
+import { IRenderPlans, Iplan } from "@/interfaces/plan-interface";
 
-interface renderPlansProps{
-  plans:Iplan[]
-}
 
-const RenderPlans = ({ plans }:renderPlansProps ) => {
+
+const RenderPlans = ({ plans }:IRenderPlans) => {
   const { deletePlan } = planService;
   const { toast } = useToast();
   const router = useRouter();
@@ -56,13 +54,7 @@ const RenderPlans = ({ plans }:renderPlansProps ) => {
         </TableHeader>
         <TableBody>
           {plans.map(
-            (plan: {
-              id: string;
-              name: string;
-              price: string;
-              description: string;
-              fidelity: boolean;
-            }) => (
+            (plan:Iplan) => (
               <TableRow key={plan.id}>
                 <TableCell>{plan.fidelity ? "Sim" : "Não"}</TableCell>
                 <TableCell>{plan.name}</TableCell>

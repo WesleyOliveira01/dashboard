@@ -11,7 +11,7 @@ import Input from "./ui/Input";
 import { DialogClose, DialogContent } from "./ui/dialog";
 import { Textarea } from "./ui/textarea";
 import { useToast } from "./ui/use-toast";
-import { Iplan } from "@/interfaces/plan-interface";
+import { IPlanForm, Iplan } from "@/interfaces/plan-interface";
 const formSchema = z.object({
   name: z
     .string({ required_error: "O nome do plano é obrigatorio" })
@@ -23,17 +23,9 @@ const formSchema = z.object({
   fidelidade: z.boolean(),
 });
 
-interface editPlanProps{
-  plan:{
-    id:string,
-    name:string,
-    price:string,
-    description:string,
-    fidelity:boolean,
-  }
-}
 
-const EditPlanForm = ({ plan }:editPlanProps) => {
+
+const EditPlanForm = ({ plan }: IPlanForm) => {
   const {
     register,
     control,
@@ -46,11 +38,11 @@ const EditPlanForm = ({ plan }:editPlanProps) => {
   });
   const { toast } = useToast();
   const router = useRouter();
-  
+
   const { editPlan } = planService;
-  const editPlanForm = async (formData:Iplan) => {
+  const editPlanForm = async (formData: Iplan) => {
     formData.id = plan.id;
-    console.log(formData)
+    console.log(formData);
     try {
       await editPlan(formData);
       toast({
@@ -135,7 +127,7 @@ const EditPlanForm = ({ plan }:editPlanProps) => {
           >
             Salvar alteraçôes
           </Button>
-       </DialogClose>
+        </DialogClose>
       </form>
     </DialogContent>
   );
