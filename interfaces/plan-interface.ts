@@ -6,4 +6,12 @@ interface Iplan{
     description:string
 }
 
-export type {Iplan}
+interface IPlanForm{
+    plan:Iplan
+}
+
+interface IRenderPlans{
+    plans:Iplan[]
+}
+
+export type {Iplan,IPlanForm,IRenderPlans}
