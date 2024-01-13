@@ -23,7 +23,17 @@ const formSchema = z.object({
   fidelidade: z.boolean(),
 });
 
-const EditPlanForm = (plan) => {
+interface editPlanProps{
+  plan:{
+    id:string,
+    name:string,
+    price:string,
+    description:string,
+    fidelity:boolean,
+  }
+}
+
+const EditPlanForm = ({ plan }:editPlanProps) => {
   const {
     register,
     control,
@@ -36,10 +46,11 @@ const EditPlanForm = (plan) => {
   });
   const { toast } = useToast();
   const router = useRouter();
-
+  
   const { editPlan } = planService;
-  const editPlanForm = async (formData: Iplan) => {
+  const editPlanForm = async (formData:Iplan) => {
     formData.id = plan.id;
+    console.log(formData)
     try {
       await editPlan(formData);
       toast({

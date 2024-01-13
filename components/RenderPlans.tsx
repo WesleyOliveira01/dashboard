@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/table";
 
 import Button from "@/components/ui/Button";
-import { Plan } from "@prisma/client";
 import { BadgeX, PencilRuler } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "./ui/use-toast";
@@ -20,11 +19,14 @@ import EditPlanForm from "./editPlanForm";
 import { Dialog } from "./ui/dialog";
 import { Iplan } from "@/interfaces/plan-interface";
 
-const RenderPlans = (plans:Iplan[]) => {
+interface renderPlansProps{
+  plans:Iplan[]
+}
+
+const RenderPlans = ({ plans }:renderPlansProps ) => {
   const { deletePlan } = planService;
   const { toast } = useToast();
   const router = useRouter();
-  console.log(plans)
   const removePlan = async (id: string) => {
     try {
       await deletePlan(id);
@@ -53,33 +55,41 @@ const RenderPlans = (plans:Iplan[]) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {plans.map((plan:Iplan) => (
-            <TableRow key={plan.id}>
-              <TableCell>{plan.fidelity ? "Sim" : "Não"}</TableCell>
-              <TableCell>{plan.name}</TableCell>
-              <TableCell>{plan.price}</TableCell>
-              <TableCell className="mobile:hidden">
-                {plan.description}
-              </TableCell>
-              <TableCell>
-                <Dialog>
-                  <DialogTrigger>
-                    <Button>
-                      <PencilRuler color="green" />
-                    </Button>
-                  </DialogTrigger>
-                  <EditPlanForm plan={plan} />
-                </Dialog>
-                <Button
-                  onClick={async () => {
-                    await removePlan(plan.id);
-                  }}
-                >
-                  <BadgeX color="red" />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
+          {plans.map(
+            (plan: {
+              id: string;
+              name: string;
+              price: string;
+              description: string;
+              fidelity: boolean;
+            }) => (
+              <TableRow key={plan.id}>
+                <TableCell>{plan.fidelity ? "Sim" : "Não"}</TableCell>
+                <TableCell>{plan.name}</TableCell>
+                <TableCell>{plan.price}</TableCell>
+                <TableCell className="mobile:hidden">
+                  {plan.description}
+                </TableCell>
+                <TableCell>
+                  <Dialog>
+                    <DialogTrigger>
+                      <Button>
+                        <PencilRuler color="green" />
+                      </Button>
+                    </DialogTrigger>
+                    <EditPlanForm plan={plan} />
+                  </Dialog>
+                  <Button
+                    onClick={async () => {
+                      await removePlan(plan.id);
+                    }}
+                  >
+                    <BadgeX color="red" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            )
+          )}
         </TableBody>
       </Table>
     </section>

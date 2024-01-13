@@ -22,7 +22,7 @@ async function createPlan(planData) {
 }
 
 async function getAllPlans(){
-    const allPlans = await prisma.plan.findMany({select:{name:true,price:true,fidelity:true,description:true}})
+    const allPlans = await prisma.plan.findMany({select:{id:true,name:true,price:true,fidelity:true,description:true}})
     return allPlans
 }
 
