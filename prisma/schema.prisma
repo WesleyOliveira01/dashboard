@@ -19,3 +19,13 @@ model User{
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 }
+
+model Plan{
+  id String @id @default(uuid())
+  name String
+  description String
+  price String
+  fidelity Boolean
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}

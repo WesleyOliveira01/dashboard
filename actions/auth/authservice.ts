@@ -1,13 +1,8 @@
 "use server";
-import {
-  IToken,
-  TokenPayload,
-  authData,
-  signUpData,
-} from "@/interfaces/auth-interfaces";
+import { authData } from "@/interfaces/auth-interfaces";
 import prisma from "@/lib/db";
-import { compare, hash } from "bcrypt";
-import { sign, verify } from "jsonwebtoken";
+import { compare } from "bcrypt";
+import { sign } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -18,7 +13,7 @@ async function login({ email, password }: authData) {
     },
   });
 
-  if (!user) throw new Error("User not found");
+  if (!user) throw new Error("Usuario não cadastrado");
   const isMatch = await compare(password, user.password);
   if (!isMatch) throw new Error("email ou senha invalido");
 
@@ -46,62 +41,9 @@ async function login({ email, password }: authData) {
   redirect("/dashboard");
 }
 
-async function createUser(signUpData: signUpData) {
-  const hashPassword = await hash(signUpData.password, 10);
-
-  const newUser = await prisma.user.create({
-    data: {
-      name: signUpData.name,
-      email: signUpData.email,
-      password: hashPassword,
-      isAdmin: signUpData.permissions,
-    },
-  });
-
-  redirect("/dashboard/users");
+async function signOut() {
+  cookies().delete("token");
+  redirect("/");
 }
 
-async function getUserDetails() {
-  const { value: cookie } = cookies().get("token") as any as IToken;
-
-  const token = verify(cookie, process.env.JWT_SECRET) as TokenPayload;
-  const simpleName = token.name.split(" ");
-  return {
-    id: token.sub,
-    name: token.name,
-    simpleName: simpleName[0],
-    email: token.email,
-    isAdmin: token.isAdmin,
-  };
-}
-
-async function getAllUsers() {
-  const allUsers = await prisma.user.findMany({
-    select: { id: true, name: true, email: true, isAdmin: true },orderBy:{created_at:"asc"}
-  });
-
-  return allUsers;
-}
-
-async function deleteUser(id: string) {
-  const { value: cookie } = cookies().get("token") as any as IToken;
-  const token = verify(cookie, process.env.JWT_SECRET) as TokenPayload;
-
-  if(!token.isAdmin) throw new Error("Usuario sem permissão");
-  
-  await prisma.user.delete({
-    where: {
-      id,
-    },
-  });
-
-  redirect("/dashboard/users");
-}
-
-  
-async function signOut(){
-  cookies().delete('token')
-  redirect('/')
-}
-
-export { createUser, deleteUser, getAllUsers, getUserDetails, login,signOut };
+export { login, signOut };

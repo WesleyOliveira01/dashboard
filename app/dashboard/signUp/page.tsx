@@ -1,5 +1,5 @@
 import Container from '@/components/ui/Container';
-import SignUpForm from '../../../components/login/SignUp-Form';
+import SignUpForm from '@/components/login/SignUp-Form';
 const SignUp = () => {
     return ( 
         <Container>

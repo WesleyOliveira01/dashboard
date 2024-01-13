@@ -4,6 +4,7 @@ interface authData {
 }
 
 interface signUpData {
+  id?:string
   name: string;
   email: string;
   password: string;
@@ -24,16 +25,5 @@ interface TokenPayload{
   sub?:string
 }
 
-interface IUserCard{
-  id:string
-  name:string
-  email:string
-  permission:boolean
-}
 
-interface IPopUp{
-  isError?:boolean
-  sucess?:boolean
-  message:string
-}
-export type { authData, signUpData,IToken,TokenPayload,IUserCard,IPopUp };
+export type { authData, signUpData,IToken,TokenPayload};
