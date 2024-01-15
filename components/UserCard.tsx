@@ -1,32 +1,30 @@
 "use client";
-import * as userService from "@/actions/User/UserService";
 import { IUserCard } from "@/interfaces/user-interfaces";
 import { BadgeX } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Button from "./ui/Button";
 import { useToast } from "./ui/use-toast";
-import { useRouter } from "next/navigation";
+import { deleteUser } from "@/actions/User/UserService";
 
 const UserCard = ({ name, email, permission, id }: IUserCard) => {
-  const { deleteUser } = userService;
-  const { toast } = useToast()
-  const router = useRouter()
+  const { toast } = useToast();
+  const router = useRouter();
   const removeUser = async (id: string) => {
     try {
       await deleteUser(id);
       toast({
-        description:"Usuario removido com sucesso",
-      })
-      router.refresh()
+        description: "Usuario removido com sucesso",
+      });
+      router.refresh();
     } catch (e) {
       toast({
-        description:e.message,
-        variant: "destructive"
-      })
+        description: e.message,
+        variant: "destructive",
+      });
     }
   };
 
-  
   return (
     <>
       <li className="w-full">
@@ -38,7 +36,11 @@ const UserCard = ({ name, email, permission, id }: IUserCard) => {
               <li>{permission ? "administrador" : "Usuario padrao"}</li>
             </ul>
           </Link>
-          <Button onClick={async () => {await removeUser(id)}}>
+          <Button
+            onClick={async () => {
+              await removeUser(id);
+            }}
+          >
             <BadgeX size={20} color="red" />
           </Button>
         </section>

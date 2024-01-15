@@ -2,31 +2,15 @@
 import { useForm } from "react-hook-form";
 import Input from "./ui/Input";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import * as userService from "@/actions/User/UserService";
+import { updateUser } from "@/actions/User/UserService";
 import { signUpData } from "@/interfaces/auth-interfaces";
+import { userSchema } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import * as z from "zod";
 import Button from "./ui/Button";
 import { DialogClose, DialogContent } from "./ui/dialog";
 import { useToast } from "./ui/use-toast";
-import { useRouter } from "next/navigation";
-
-const formSchema = z.object({
-  name: z
-    .string({ required_error: "O nome é obrigatorio" })
-    .min(3, { message: "insira um nome valido" }),
-  email: z
-    .string({ required_error: "O E-mail é obrigatorio" })
-    .email({ message: "insira um email valido" })
-    .min(5, { message: "insira um email valido" }),
-  password: z.string(),
-  permissions: z
-    .string({ invalid_type_error: "Selecione uma opção válida" })
-    .refine((value) => {
-      return ["default user", "admin"].includes(value);
-    })
-    .transform((value) => value === "admin"),
-});
 
 interface UserProps {
   user: {
@@ -45,17 +29,15 @@ const UpdateUsersForm = ({ user }: UserProps) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  } = useForm<z.infer<typeof userSchema>>({
+    resolver: zodResolver(userSchema),
     mode: "all",
     reValidateMode: "onChange",
   });
 
-  const {updateUser} = userService
-
   const { toast } = useToast();
 
-  const router = useRouter()
+  const router = useRouter();
 
   const onFormSubmit = async (formData: signUpData) => {
     formData.id = user?.id;
@@ -64,7 +46,7 @@ const UpdateUsersForm = ({ user }: UserProps) => {
       toast({
         description: "Usuario atualizado com sucesso",
       });
-      router.refresh()
+      router.refresh();
     } catch (error) {
       toast({
         description: error.message,

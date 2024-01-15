@@ -1,14 +1,12 @@
-import * as planService from "@/actions/plans/planService";
-
 import Container from "@/components/ui/Container";
 
 import RenderPlans from "@/components/RenderPlans";
 import { BadgePlus } from "lucide-react";
 import Link from "next/link";
 import Loading from "../loading";
+import { getAllPlans } from "@/actions/plans/planService";
 
 const Plans = async () => {
-  const { getAllPlans } = planService;
   const plans = await getAllPlans();
   return (
     <Container>

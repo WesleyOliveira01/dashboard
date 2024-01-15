@@ -13,24 +13,14 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import * as planService from "@/actions/plans/planService";
 import { Textarea } from "./ui/textarea";
 
+import { createPlan } from "@/actions/plans/planService";
 import { Iplan } from "@/interfaces/plan-interface";
+import { planSchema } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { NumericFormat } from "react-number-format";
 import { useToast } from "./ui/use-toast";
-
-const formSchema = z.object({
-  name: z
-    .string({ required_error: "O nome do plano é obrigatorio" })
-    .min(3, { message: "insira um nome valido" }),
-  descricao: z
-    .string({ required_error: "A descrição do plano é obrigatoria" })
-    .min(5, { message: "insira uma descrição valida" }),
-  valor: z.string().min(1, { message: "insira um valor valido" }),
-  fidelidade: z.boolean(),
-});
 
 const NewPlanForm = () => {
   const {
@@ -38,22 +28,22 @@ const NewPlanForm = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  } = useForm<z.infer<typeof planSchema>>({
+    resolver: zodResolver(planSchema),
     mode: "all",
     reValidateMode: "onChange",
   });
   const { toast } = useToast();
 
   const router = useRouter();
-  const { createPlan } = planService;
+
   const onFormSubmit = async (formData: Iplan) => {
     try {
       await createPlan(formData);
       toast({
         description: "Plano criado com sucesso",
       });
-      router.refresh()
+      router.refresh();
     } catch (error) {
       toast({
         description: error.message,

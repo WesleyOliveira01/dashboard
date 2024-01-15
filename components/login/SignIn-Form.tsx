@@ -1,5 +1,4 @@
 "use client";
-import * as authService from "@/actions/auth/authservice";
 import { authData } from "@/interfaces/auth-interfaces";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -16,26 +15,17 @@ import {
   CardTitle,
 } from "../ui/card";
 
+import { login } from "@/actions/auth/authservice";
+import { signInSchema } from "@/lib/utils";
 import ReactLoading from "react-loading";
-const formSchema = z.object({
-  email: z
-    .string({ required_error: "O E-mail é obrigatorio" })
-    .email({ message: "insira um email valido" })
-    .min(5),
-  password: z
-    .string({ required_error: "A senha é obrigatorio" })
-    .min(8, { message: "a senha deve ter pelo menos 8 digitos" }),
-});
 
 const SignInForm = () => {
-  const { login } = authService;
-
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  } = useForm<z.infer<typeof signInSchema>>({
+    resolver: zodResolver(signInSchema),
     mode: "all",
     reValidateMode: "onChange",
   });
@@ -84,10 +74,10 @@ const SignInForm = () => {
           <Button button_cn="w-full bg-zinc-950 text-zinc-50 rounded-md  flex items-center justiify-center gap-2">
             {loading ? (
               <ReactLoading
-                color="#09090B"
+                color="#ffffff"
                 type="spin"
-                width={50}
-                height={20}
+                width={20}
+                height={10}
               />
             ) : (
               <p className="w-full">Entrar</p>

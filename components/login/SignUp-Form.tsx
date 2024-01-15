@@ -13,44 +13,25 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import * as userService from "@/actions/User/UserService";
+import { createUser } from "@/actions/User/UserService";
 import { signUpData } from "@/interfaces/auth-interfaces";
+import { signUpSchema } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useToast } from "../ui/use-toast";
-const formSchema = z.object({
-  name: z
-    .string({ required_error: "O nome é obrigatorio" })
-    .min(3, { message: "insira um nome valido" }),
-  email: z
-    .string({ required_error: "O E-mail é obrigatorio" })
-    .email({ message: "insira um email valido" })
-    .min(5, { message: "insira um email valido" }),
-  password: z
-    .string({ required_error: "A senha é obrigatorio" })
-    .min(8, { message: "a senha deve ter pelo menos 8 digitos" }),
-  permissions: z
-    .string({ invalid_type_error: "Selecione uma opção válida" })
-    .refine((value) => {
-      return ["default user", "admin"].includes(value);
-    })
-    .transform((value) => value === "admin"),
-});
 
 const SignUpForm = () => {
   const {
     register,
-    control,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  } = useForm<z.infer<typeof signUpSchema>>({
+    resolver: zodResolver(signUpSchema),
     mode: "all",
     reValidateMode: "onChange",
   });
 
   const { toast } = useToast();
   const router = useRouter();
-  const { createUser } = userService;
 
   const onFormSubmit = async (formData: signUpData) => {
     try {
@@ -62,7 +43,7 @@ const SignUpForm = () => {
     } catch (error) {
       toast({
         description: error.message,
-        variant:"destructive"
+        variant: "destructive",
       });
     }
   };

@@ -1,7 +1,7 @@
-"use client"
-import * as planService from "@/actions/plans/planService";
+"use client";
+import { IPlanForm, Iplan } from "@/interfaces/plan-interface";
+import { planSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Plan } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
@@ -11,19 +11,7 @@ import Input from "./ui/Input";
 import { DialogClose, DialogContent } from "./ui/dialog";
 import { Textarea } from "./ui/textarea";
 import { useToast } from "./ui/use-toast";
-import { IPlanForm, Iplan } from "@/interfaces/plan-interface";
-const formSchema = z.object({
-  name: z
-    .string({ required_error: "O nome do plano é obrigatorio" })
-    .min(3, { message: "insira um nome valido" }),
-  descricao: z
-    .string({ required_error: "A descrição do plano é obrigatoria" })
-    .min(5, { message: "insira uma descrição valida" }),
-  valor: z.string().min(1, { message: "insira um valor valido" }),
-  fidelidade: z.boolean(),
-});
-
-
+import { editPlan } from "@/actions/plans/planService";
 
 const EditPlanForm = ({ plan }: IPlanForm) => {
   const {
@@ -31,15 +19,14 @@ const EditPlanForm = ({ plan }: IPlanForm) => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  } = useForm<z.infer<typeof planSchema>>({
+    resolver: zodResolver(planSchema),
     mode: "all",
     reValidateMode: "onChange",
   });
+
   const { toast } = useToast();
   const router = useRouter();
-
-  const { editPlan } = planService;
   const editPlanForm = async (formData: Iplan) => {
     formData.id = plan.id;
     console.log(formData);
@@ -56,6 +43,7 @@ const EditPlanForm = ({ plan }: IPlanForm) => {
       });
     }
   };
+
   return (
     <DialogContent>
       <form onSubmit={handleSubmit(editPlanForm)}>
