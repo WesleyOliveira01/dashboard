@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { InputHTMLAttributes, forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 
