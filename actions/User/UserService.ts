@@ -17,7 +17,7 @@ async function createUser(signUpData: signUpData) {
   
     const hashPassword = await hash(signUpData.password, 10);
   
-    const newUser = await prisma.user.create({
+    await prisma.user.create({
       data: {
         name: signUpData.name,
         email: signUpData.email,
