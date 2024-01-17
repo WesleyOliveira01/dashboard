@@ -28,4 +28,17 @@ model Plan{
   fidelity Boolean
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+  plan_clients client[]
+}
+
+model client{
+  id String @id @default(uuid())
+  nome String
+  cpf Int
+  rg Int
+  email String
+  telefone Int
+  endereco String
+  plan Plan @relation(fields: [plan_id], references: [id])
+  plan_id String
 }
