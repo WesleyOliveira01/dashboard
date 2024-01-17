@@ -66,4 +66,18 @@ const signUpSchema = z.object({
     .transform((value) => value === "admin"),
 });
 
-export {planSchema,userSchema,signInSchema,signUpSchema}
+const clientSchema = z.object({
+  nome:z.string(),
+  cpf:z.string(),
+  rg:z.string(),
+  email:z.string().email(),
+  telefone:z.string(),
+  endereco:z.string(),
+  numero:z.number(),
+  complemento:z.string(),
+  cep:z.string(),
+  plano:z.string(),
+  instalacao:z.boolean(),
+  nascimento:z.string(),
+})
+export {planSchema,userSchema,signInSchema,signUpSchema,clientSchema}
