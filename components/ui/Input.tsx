@@ -7,13 +7,14 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   forElement: string;
   label_cn?: string;
   input_cn?: string;
-  error_message:string
+  error_message?:string
+  box_cn?:string
 };
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ type = "text", label, forElement, input_cn, label_cn,error_message,...rest }, ref) => {
+  ({ type = "text", label, forElement, input_cn, label_cn,error_message,box_cn,...rest }, ref) => {
     return (
-      <section className="flex flex-col gap-2">
+      <section className={twMerge("flex flex-col gap-2",box_cn)}>
         <label
           className={twMerge(label_cn, "block font-semibold")}
           htmlFor={forElement}
