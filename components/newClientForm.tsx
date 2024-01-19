@@ -1,7 +1,9 @@
 "use client";
+import { createClient } from "@/actions/client/clientService";
 import { IRenderPlans } from "@/interfaces/plan-interface";
 import { clientSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { PatternFormat } from "react-number-format";
@@ -11,9 +13,7 @@ import Input from "./ui/Input";
 import Select from "./ui/Select";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
-import { createClient } from "@/actions/client/clientService";
 import { toast } from "./ui/use-toast";
-import { useRouter } from "next/navigation";
 
 const NewClientForm = ({ plans }: IRenderPlans) => {
   const {
@@ -26,11 +26,11 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
     mode: "all",
     reValidateMode: "onChange",
   });
-  const router = useRouter()
-  console.log(errors)
+  const router = useRouter();
+  console.log(errors);
   const onFormSubmit = async (data: any) => {
     try {
-      await createClient(data)
+      await createClient(data);
       toast({
         description: "Client cadastrado com sucesso",
       });
@@ -208,22 +208,38 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
               )}
             />
           </section>
-          <Select
-            {...register("plano")}
-            label="Planos"
-            forElement="plano"
-            error_message={errors?.plano?.message}
-            select_cn="rounded-md border-zinc-200 focus:border-none active:border-none"
-          >
-            {plans.map((plan) => (
-              <option className="bg-white" key={plan.id} value={plan.id}>
-                <span>{plan.name}</span>
-                {plan.fidelity && <span> COM FIDELIDADE </span>}
-                <span> POR </span>
-                <span>{plan.price}</span>
+          <section className="flex gap-1">
+            <Select
+              {...register("plano")}
+              label="Planos"
+              forElement="plano"
+              error_message={errors?.plano?.message}
+              select_cn="rounded-md border-zinc-200 focus:border-none active:border-none w-[70%]"
+            >
+              {plans.map((plan) => (
+                <option className="bg-white" key={plan.id} value={plan.id}>
+                  <span>{plan.name}</span>
+                  {plan.fidelity && <span> COM FIDELIDADE </span>}
+                  <span> POR </span>
+                  <span>{plan.price}</span>
+                </option>
+              ))}
+            </Select>
+            <Select
+              {...register("vencimento")}
+              label="Data de vencimento"
+              forElement="vencimento"
+              error_message={errors?.vencimento?.message}
+              select_cn="rounded-md border-zinc-200 focus:border-none active:border-none w-[30%]"
+            >
+              <option className="bg-white" value="10">
+                Todo dia 10
               </option>
-            ))}
-          </Select>
+              <option className="bg-white" value="20">
+                Todo dia 20
+              </option>
+            </Select>
+          </section>
           <Controller
             name="instalacao"
             control={control}
