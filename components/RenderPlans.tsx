@@ -37,7 +37,7 @@ const RenderPlans = ({ plans }: IRenderPlans) => {
     }
   };
   return (
-    <section className=" w-[90%] ">
+    <section className=" w-full ">
       <Table>
         <TableHeader>
           <TableRow>

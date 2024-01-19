@@ -73,12 +73,14 @@ const SignInForm = () => {
         <CardFooter className="flex justify-between">
           <Button button_cn="w-full bg-zinc-950 text-zinc-50 rounded-md  flex items-center justiify-center gap-2">
             {loading ? (
-              <ReactLoading
-                color="#ffffff"
-                type="spin"
-                width={20}
-                height={10}
-              />
+              <p className="w-full flex items-center">
+                <ReactLoading
+                  color="#ffffff"
+                  type="spin"
+                  width={20}
+                  height={10}
+                />
+              </p>
             ) : (
               <p className="w-full">Entrar</p>
             )}

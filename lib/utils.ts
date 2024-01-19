@@ -67,17 +67,33 @@ const signUpSchema = z.object({
 });
 
 const clientSchema = z.object({
-  nome:z.string({required_error:"O Nome/Razão social é obrigatorio"}).min(4,{message:"insira um valor valido"}),
-  cpf:z.string({required_error:"Campo Obrigatorio"}).min(11,{message:"Insira um valor valido"}),
-  rg:z.string().optional(),
-  email:z.string({required_error:"O E-mail é obrigatorio"}).email({message:"Insira um email valido"}).min(5, {message:"Insira um email valido"}),
-  telefone:z.string({required_error:"O Telefone é obrigatorio"}).min(11,{message:"Insira um valor valido"}),
-  endereco:z.string({required_error:"O Endereço é obrigatorio"}).min(4,{message:"Insira um valor valido"}),
-  numero:z.string({required_error:"O Número é obrigatorio"}).min(1,{message:"Insira um valor valido"}),
-  complemento:z.string().optional(),
-  cep:z.string({required_error:"O CEP é obrigatorio"}).min(8,{message:"Insira um valor valido"}),
-  plano:z.string({required_error:"O Plano é obrigatorio"}),
-  instalacao:z.enum(["a vista", "a prazo"]),
-  nascimento:z.string().optional(),
-})
+  nome: z
+    .string({ required_error: "O Nome/Razão social é obrigatorio" })
+    .min(4, { message: "insira um valor valido" }),
+  cpf: z
+    .string({ required_error: "Campo Obrigatorio" })
+    .min(11, { message: "Insira um valor valido" }),
+  rg: z.string().optional(),
+  email: z
+    .string({ required_error: "O E-mail é obrigatorio" })
+    .email({ message: "Insira um email valido" })
+    .min(5, { message: "Insira um email valido" }),
+  telefone: z
+    .string({ required_error: "O Telefone é obrigatorio" })
+    .min(11, { message: "Insira um valor valido" }),
+  endereco: z
+    .string({ required_error: "O Endereço é obrigatorio" })
+    .min(4, { message: "Insira um valor valido" }),
+  numero: z
+    .string({ required_error: "O Número é obrigatorio" })
+    .min(1, { message: "Insira um valor valido" }),
+  complemento: z.string().optional(),
+  cep: z
+    .string({ required_error: "O CEP é obrigatorio" })
+    .min(8, { message: "Insira um valor valido" }),
+  plano: z.string({ required_error: "O Plano é obrigatorio" }),
+  instalacao: z.enum(["a vista", "a prazo"]),
+  nascimento: z.string().optional(),
+  vencimento: z.string({ required_error: "a Data de vencimento é obrigatoria" }),
+});
 export {planSchema,userSchema,signInSchema,signUpSchema,clientSchema}
