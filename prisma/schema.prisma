@@ -34,12 +34,14 @@ model Plan{
 model client{
   id String @id @default(uuid())
   nome String
-  cpf_cnpj BigInt
-  rg_ie BigInt
+  cpf_cnpj String
+  rg_ie String
   email String
-  telefone BigInt
+  telefone String 
   endereco String
   nascimento String?
+  vencimento String
   plan Plan @relation(fields: [plan_id], references: [id])
   plan_id String
+  created_at DateTime? @default(now())
 }
