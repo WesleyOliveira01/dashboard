@@ -45,4 +45,31 @@ async function getClients() {
   return allClients;
 }
 
-export { createClient, getClients };
+async function getClientByID(id: string) {
+  const client = await prisma.client.findFirst({
+    where: {
+      id: id,
+    },
+    select: {
+      created_at:true,
+      nome: true,
+      telefone: true,
+      email: true,
+      endereco: true,
+      vencimento: true,
+      id: true,
+      plan: {
+        select: { name: true, description: true, price: true, fidelity: true },
+      },
+    },
+  });
+}
+
+async function setInstallData(data:{id:string,data:string}) {
+    await prisma.client.update({where:{id:data.id},
+        data: {
+            data_instalacao: data.data
+        }
+    })
+}
+export { createClient, getClients,getClientByID,setInstallData };
