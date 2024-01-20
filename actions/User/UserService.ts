@@ -64,6 +64,8 @@ async function createUser(signUpData: signUpData) {
         id,
       },
     });
+
+    redirect("/dashboard/users");
   }
 
   async function updateUser(userData) {

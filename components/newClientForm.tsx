@@ -80,7 +80,6 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
                     error_message={errors?.cpf?.message}
                     format="##.###.###/####-##"
                     placeholder="00.000.000/0000-00"
-                    allowEmptyFormatting
                     customInput={Input}
                     onValueChange={(values) => {
                       field.onChange(values.value);
@@ -119,7 +118,6 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
                     placeholder="000.000.000-00"
                     error_message={errors?.cpf?.message}
                     format="###.###.###-##"
-                    allowEmptyFormatting
                     customInput={Input}
                     onValueChange={(values) => {
                       field.onChange(values.value);
