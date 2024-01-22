@@ -1,5 +1,6 @@
-import { BadgeX } from "lucide-react";
-import Button from "./ui/Button";
+"use client";
+import { IRenderClients } from "@/interfaces/client-interfaces";
+import { useRouter } from "next/navigation";
 import {
   Table,
   TableBody,
@@ -8,9 +9,9 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-import { IRenderClients } from "@/interfaces/client-interfaces";
 
-const RenderClient = ({clients}:IRenderClients) => {
+const RenderClient = ({ clients }: IRenderClients) => {
+  const router = useRouter();
   return (
     <Table>
       <TableHeader>
@@ -21,16 +22,15 @@ const RenderClient = ({clients}:IRenderClients) => {
       </TableHeader>
       <TableBody>
         {clients.map((client) => (
-          <TableRow key={client.id}>
+          <TableRow
+            className="cursor-pointer"
+            key={client.id}
+            onClick={() => router.push(`/dashboard/clients/${client.id}`)}
+          >
             <TableCell>{client.nome}</TableCell>
             <TableCell>{client.telefone}</TableCell>
             <TableCell>{client.endereco}</TableCell>
             <TableCell>{client.plan.name}</TableCell>
-            <TableCell>
-              <Button>
-                <BadgeX color="red" />
-              </Button>
-            </TableCell>
           </TableRow>
         ))}
       </TableBody>

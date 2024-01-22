@@ -135,6 +135,7 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
                     required={false}
                     error_message={errors?.nascimento?.message}
                     format="##/##/####"
+                    placeholder="dd/mm/aaaa"
                     customInput={Input}
                     onValueChange={(values) => {
                       field.onChange(values.value);
@@ -238,26 +239,54 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
               </option>
             </Select>
           </section>
-          <Controller
-            name="instalacao"
-            control={control}
-            render={({ field }) => (
-              <RadioGroup
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-              >
-                <div className="flex  gap-4">
-                  <label htmlFor="a vista">
-                    <RadioGroupItem id="a vista" value="a vista" /> 150 a vista
-                  </label>
-                  <label htmlFor="a prazo">
-                    <RadioGroupItem id="a prazo" value="a prazo" /> 195 em até
-                    3x
-                  </label>
-                </div>
-              </RadioGroup>
-            )}
-          />
+
+          <section className="flex gap-1 items-center">
+            <Select
+              {...register("pesquisa")}
+              label="Como nos conheceu?"
+              forElement="pesquisa"
+              error_message={errors?.pesquisa?.message}
+              select_cn="rounded-md border-zinc-200 focus:border-none active:border-none w-[70%]"
+            >
+              <option className="bg-white" value="Goole">
+                Google
+              </option>
+              <option className="bg-white" value="Indicação">
+                Indicação
+              </option>
+              <option className="bg-white" value="Plafleto">
+                Panfleto
+              </option>
+              <option className="bg-white" value="Já é/foi cliente">
+                Já é/foi cliente
+              </option>
+              <option className="bg-white" value="Carro de som">
+                Carro de som
+              </option>
+            </Select>
+            <Controller
+              name="instalacao"
+              control={control}
+              render={({ field }) => (
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="w-[30%]"
+                >
+                  <div className="flex  gap-4">
+                    <label htmlFor="a vista">
+                      <RadioGroupItem id="a vista" value="a vista" /> 150 a
+                      vista
+                    </label>
+                    <label htmlFor="a prazo">
+                      <RadioGroupItem id="a prazo" value="a prazo" /> 195 em até
+                      3x
+                    </label>
+                  </div>
+                </RadioGroup>
+              )}
+            />
+          </section>
           <Button
             button_cn="w-full bg-zinc-950 text-zinc-50 rounded-md   "
             type="submit"

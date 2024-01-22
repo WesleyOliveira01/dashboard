@@ -19,7 +19,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <>
         <label className={twMerge("",label_cn)} htmlFor={forElement}></label>
-        <select className={twMerge("",select_cn)} ref={ref} name={forElement} id={forElement}>
+        <select className={twMerge("p-3",select_cn)} ref={ref} name={forElement} id={forElement}>
           {children}
         </select>
         <p className="text-rose-500">{error_message}</p>
