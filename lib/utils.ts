@@ -95,5 +95,6 @@ const clientSchema = z.object({
   instalacao: z.enum(["a vista", "a prazo"]),
   nascimento: z.string().optional(),
   vencimento: z.string({ required_error: "a Data de vencimento é obrigatoria" }),
+  pesquisa:z.string({ required_error: "a Data de vencimento é obrigatoria" })
 });
 export {planSchema,userSchema,signInSchema,signUpSchema,clientSchema}
