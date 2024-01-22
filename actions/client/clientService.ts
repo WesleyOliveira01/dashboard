@@ -17,6 +17,8 @@ async function createClient(data: any) {
     endereco: endereco,
     plan_id: data.plano as string,
     vencimento: data.vencimento,
+    pesquisa: data.pesquisa,
+    instalacao: data.instalacao
   };
   await prisma.client.create({
     data: {
@@ -55,6 +57,8 @@ async function getClientByID(id: string) {
       nome: true,
       telefone: true,
       email: true,
+      cpf_cnpj:true,
+      rg_ie: true,
       endereco: true,
       vencimento: true,
       id: true,
@@ -63,6 +67,8 @@ async function getClientByID(id: string) {
       },
     },
   });
+
+  return client
 }
 
 async function setInstallData(data:{id:string,data:string}) {
