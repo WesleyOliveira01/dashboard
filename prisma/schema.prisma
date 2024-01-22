@@ -41,7 +41,9 @@ model client{
   endereco String
   nascimento String?
   vencimento String
+  instalacao String
   data_instalacao String?
+  pesquisa String
   plan Plan @relation(fields: [plan_id], references: [id])
   plan_id String
   created_at DateTime? @default(now())
