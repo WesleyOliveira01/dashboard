@@ -15,6 +15,10 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { toast } from "./ui/use-toast";
 
+type endereco = {
+  logradouro:string
+}
+
 const NewClientForm = ({ plans }: IRenderPlans) => {
   const {
     register,
@@ -27,7 +31,6 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
     reValidateMode: "onChange",
   });
   const router = useRouter();
-  console.log(errors);
   const onFormSubmit = async (data: any) => {
     try {
       await createClient(data);
@@ -42,6 +45,12 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
       });
     }
   };
+  const [endereco,setEndereco] = useState<endereco | null>(null)
+  const getAddressByCep = async (cep:string) => {
+    const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
+    const data = await res.json()
+    setEndereco(data)
+  }
   const [pj, setPj] = useState<boolean>(false);
   return (
     <Card className="lg:w-[60%] w-[95%]">
@@ -173,6 +182,7 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
               label="Endereço"
               forElement="endereco"
               box_cn="w-[50%]"
+              defaultValue={endereco?.logradouro || ''}
               error_message={errors?.endereco?.message}
             />
             <Input
@@ -200,6 +210,12 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
                   error_message={errors?.cep?.message}
                   format="#####-###"
                   customInput={Input}
+                  onBlur={(e) => {
+                    const cep = e.target.value;
+                    if (cep.length === 9) {
+                      getAddressByCep(cep);
+                    }
+                  }}
                   onValueChange={(values) => {
                     field.onChange(values.value);
                   }}
@@ -248,10 +264,10 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
               error_message={errors?.pesquisa?.message}
               select_cn="rounded-md border-zinc-200 focus:border-none active:border-none w-[70%]"
             >
-              <option className="bg-white" value="Goole">
+              <option className="bg-white" value="Google">
                 Google
               </option>
-              <option className="bg-white" value="Indicação">
+              <option className="bg-white" value="Indicacão">
                 Indicação
               </option>
               <option className="bg-white" value="Plafleto">
