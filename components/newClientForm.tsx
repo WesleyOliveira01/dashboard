@@ -25,6 +25,7 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
     control,
     handleSubmit,
     formState: { errors },
+    setValue
   } = useForm<z.infer<typeof clientSchema>>({
     resolver: zodResolver(clientSchema),
     mode: "all",
@@ -182,7 +183,7 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
               label="Endereço"
               forElement="endereco"
               box_cn="w-[50%]"
-              defaultValue={endereco?.logradouro || ''}
+              defaultValue={endereco?.logradouro}
               error_message={errors?.endereco?.message}
             />
             <Input
@@ -226,6 +227,7 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
           <section className="flex gap-1">
             <Select
               {...register("plano")}
+              onChange={(e) => setValue("plano", e.target.value)}
               label="Planos"
               forElement="plano"
               error_message={errors?.plano?.message}
@@ -267,10 +269,10 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
               <option className="bg-white" value="Google">
                 Google
               </option>
-              <option className="bg-white" value="Indicacão">
+              <option className="bg-white" value="Indicação">
                 Indicação
               </option>
-              <option className="bg-white" value="Plafleto">
+              <option className="bg-white" value="Planfeto">
                 Panfleto
               </option>
               <option className="bg-white" value="Já é/foi cliente">

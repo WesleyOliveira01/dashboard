@@ -29,6 +29,64 @@ async function createClient(data: any) {
   redirect("/dashboard/clients");
 }
 
+type clientSeach = {
+  google:number,
+  indicacao:number,
+  carroDeSom:number,
+  panfleto:number,
+  jaFoiClient:number
+}
+
+const getAllSearchs  = async () => {
+  const allClients = await prisma.client.findMany({})
+  
+  let search:clientSeach = {
+    google: 0,
+    indicacao: 0,
+    carroDeSom:0,
+    panfleto:0,
+    jaFoiClient:0
+  }
+
+  allClients.forEach((client) => {
+    if(client.pesquisa === "Google") search.google++
+    if (client.pesquisa === "Indicação") search.indicacao++;
+    if(client.pesquisa === "Carro de som") search.carroDeSom++
+    if(client.pesquisa === "Panfleto") search.panfleto++
+    if(client.pesquisa === "já é/foi cliente") search.jaFoiClient++
+  })
+
+  return search
+}
+
+async function updateClient(id: string, data: any) {
+  const endereco = `${data.endereco},${data.numero} ${data.complemento}, ${data.cep}`;
+  const dataDeNascimento = formatarData(data.nascimento);
+  const client = {
+    nome: data.nome as string,
+    cpf_cnpj: data.cpf,
+    rg_ie: data.rg,
+    email: data.email.toLowerCase() as string,
+    telefone: data.telefone,
+    nascimento: dataDeNascimento,
+    endereco: endereco,
+    plan_id: data.plano as string,
+    vencimento: data.vencimento,
+    pesquisa: data.pesquisa,
+    instalacao: data.instalacao
+  };
+  await prisma.client.update({
+    where: {
+      id: id,
+    },
+    data: {
+      ...client,
+    },
+  });
+
+  redirect("/dashboard/clients");
+}
+
 async function getClients() {
   let allClients = await prisma.client.findMany({
     select: {
@@ -78,4 +136,4 @@ async function setInstallData(data:{id:string,data:string}) {
         }
     })
 }
-export { createClient, getClients,getClientByID,setInstallData };
+export { createClient, getClients,getClientByID,setInstallData,getAllSearchs };
