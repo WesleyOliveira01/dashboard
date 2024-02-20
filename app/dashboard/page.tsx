@@ -1,14 +1,22 @@
 import { getAllSearchs } from "@/actions/client/clientService";
 import { getSales } from "@/actions/sales/salesService";
 import Container from "@/components/ui/Container";
-import { Car, Chrome, Coins, SmilePlus, Speech, StickyNote } from "lucide-react";
+import {
+  Car,
+  Chrome,
+  Coins,
+  SmilePlus,
+  Speech,
+  StickyNote,
+} from "lucide-react";
 import SaleCard from "./../../components/saleCard";
+
 const Dashboard = async () => {
   const sales = await getSales();
   const search = await getAllSearchs();
   return (
     <Container className="gap-5">
-      <section className="p-2 flex justify-evenly w-full gap-2">
+      <section className="lg:p-2 flex justify-evenly w-full flex-wrap gap-2">
         <SaleCard
           icon={<Car size={30} color="#fff" />}
           titulo="Carro de som"
@@ -41,15 +49,10 @@ const Dashboard = async () => {
         />
       </section>
       <section className="p-3 flex justify-between w-full font-semibold">
-        <h1>
-          Painel de vendas
-        </h1>
-        <h1>
-          Vendas Hoje: {sales.day}
-        </h1>
+        <h1>Painel de vendas</h1>
+        <h1>Vendas Hoje: {sales.day}</h1>
       </section>
       <section className="bg-zinc-200 border-2 border-zinc-400 border-dashed rounded-md w-[70%] p-11">
-        
         anything here
       </section>
     </Container>
