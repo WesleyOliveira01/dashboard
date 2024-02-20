@@ -1,5 +1,5 @@
 'use server'
-
+import prisma from "@/lib/db";
 const date = new Date()
 
 const getSales = async () => {
