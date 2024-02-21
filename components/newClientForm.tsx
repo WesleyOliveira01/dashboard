@@ -16,8 +16,8 @@ import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { toast } from "./ui/use-toast";
 
 type endereco = {
-  logradouro:string
-}
+  logradouro: string;
+};
 
 const NewClientForm = ({ plans }: IRenderPlans) => {
   const {
@@ -25,7 +25,7 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
     control,
     handleSubmit,
     formState: { errors },
-    setValue
+    setValue,
   } = useForm<z.infer<typeof clientSchema>>({
     resolver: zodResolver(clientSchema),
     mode: "all",
@@ -46,12 +46,12 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
       });
     }
   };
-  const [endereco,setEndereco] = useState<endereco | null>(null)
-  const getAddressByCep = async (cep:string) => {
-    const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
-    const data = await res.json()
-    setEndereco(data)
-  }
+ 
+  const getAddressByCep = async (cep: string) => {
+    const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const data = await res.json();
+    setValue("endereco", data?.logradouro)
+  };
   const [pj, setPj] = useState<boolean>(false);
   return (
     <Card className="lg:w-[60%] w-[95%]">
@@ -183,7 +183,6 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
               label="Endereço"
               forElement="endereco"
               box_cn="w-[50%]"
-              defaultValue={endereco?.logradouro}
               error_message={errors?.endereco?.message}
             />
             <Input
