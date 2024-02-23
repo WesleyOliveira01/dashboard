@@ -1,5 +1,6 @@
-import { getAllSearchs } from "@/actions/client/clientService";
+import { getAllSearchs, getClients } from "@/actions/client/clientService";
 import { getSales } from "@/actions/sales/salesService";
+import RenderClient from "@/components/RenderClients";
 import Container from "@/components/ui/Container";
 import {
   Car,
@@ -10,12 +11,18 @@ import {
   StickyNote,
 } from "lucide-react";
 import SaleCard from "./../../components/saleCard";
+import Loading from "./loading";
 
 const Dashboard = async () => {
   const sales = await getSales();
   const search = await getAllSearchs();
+  const clients = await getClients();
   return (
     <Container className="gap-5">
+      <section className="p-3 flex justify-between w-full font-semibold">
+        <h1>Painel de vendas</h1>
+        <h1>Vendas Hoje: {sales.day}</h1>
+      </section>
       <section className="lg:p-2 flex justify-evenly w-full flex-wrap gap-2">
         <SaleCard
           icon={<Car size={30} color="#fff" />}
@@ -48,13 +55,8 @@ const Dashboard = async () => {
           total={sales.month}
         />
       </section>
-      <section className="p-3 flex justify-between w-full font-semibold">
-        <h1>Painel de vendas</h1>
-        <h1>Vendas Hoje: {sales.day}</h1>
-      </section>
-      <section className="bg-zinc-200 border-2 border-zinc-400 border-dashed rounded-md w-[70%] p-11">
-        anything here
-      </section>
+
+      {clients.length === 0 ? <Loading /> : <RenderClient clients={clients} />}
     </Container>
   );
 };

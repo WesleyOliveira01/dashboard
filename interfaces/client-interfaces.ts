@@ -5,8 +5,7 @@ interface IClients {
   telefone: string;
   endereco: string;
   vencimento: string;
-  instalacao:string
-  plan: {
+    plan: {
     name: string;
     description: string;
     price: string;

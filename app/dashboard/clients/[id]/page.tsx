@@ -3,13 +3,15 @@ import Button from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { BadgeX, History } from "lucide-react";
-import SelectDate from './../../../../components/selectInstallDate';
+import SelectDate from '@/components/selectInstallDate';
 import RemoveClientPopUp from "@/components/removeClientPopUp";
+import UpdateClientForm from '@/components/EditClientForm';
+import { getAllPlans } from "@/actions/plans/planService";
 
 const ClientDetails = async ({ params }: { params: { id: string } }) => {
   const id = params.id;
   const cliente = await getClientByID(id);
-
+  const plans = await getAllPlans()
   return (
     <Container>
       <section className="w-full flex items-center justify-between p-4">
@@ -39,6 +41,9 @@ const ClientDetails = async ({ params }: { params: { id: string } }) => {
           <h2 className="font-semibold">RG/IE:</h2> {cliente?.rg_ie}
         </li>
         <li>
+          <h2 className="font-semibold">Nascimento:</h2> {cliente?.nascimento}
+        </li>
+        <li>
           <h2 className="font-semibold">E-mail:</h2> {cliente?.email}
         </li>
         <li>
@@ -57,6 +62,9 @@ const ClientDetails = async ({ params }: { params: { id: string } }) => {
         <li>
           <h2 className="font-semibold">Plano:</h2> {cliente?.instalacao}
         </li>
+        <li>
+          <h2 className="font-semibold">Como conheceu:</h2> {cliente?.pesquisa}
+        </li>
 
         <li className="flex gap-2 items-center">
           <Dialog>
@@ -68,6 +76,7 @@ const ClientDetails = async ({ params }: { params: { id: string } }) => {
                 <History size={20} color="#09090B" />
               </Button>
             </DialogTrigger>
+            <UpdateClientForm client={cliente} plans={plans} />
           </Dialog>
           <Dialog>
             <DialogTrigger>

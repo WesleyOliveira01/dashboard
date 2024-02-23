@@ -29,12 +29,18 @@ const SelectDate = ({ id }: { id: string }) => {
     reValidateMode: "onChange",
   });
   const router = useRouter();
-  const onFormSubmit = async (data: any) => {
-    const dia = data.data_instalacao.getDay();
-    const mes = data.data_instalacao.getMonth() + 1;
-    const ano = data.data_instalacao.getFullYear();
+  const formatDate = (data) => {
+    const dia = data.getDay();
+    const mes = data.getMonth() + 1;
+    const ano = data.getFullYear();
 
-    const instalacao = `${dia}-${mes}-${ano}`;
+    if (dia < 10 && mes < 10) {
+      return `0${dia}/0${mes}/${ano}`;
+    }
+    return `${dia}/${mes}/${ano}`;
+  };
+  const onFormSubmit = async (data: any) => {
+    const instalacao = formatDate(data.data_instalacao);
     const updateData = {
       id: id as string,
       data: instalacao,

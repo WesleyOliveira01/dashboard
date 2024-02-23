@@ -15,9 +15,6 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { toast } from "./ui/use-toast";
 
-type endereco = {
-  logradouro: string;
-};
 
 const NewClientForm = ({ plans }: IRenderPlans) => {
   const {
@@ -46,11 +43,11 @@ const NewClientForm = ({ plans }: IRenderPlans) => {
       });
     }
   };
- 
+
   const getAddressByCep = async (cep: string) => {
     const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
     const data = await res.json();
-    setValue("endereco", data?.logradouro)
+    setValue("endereco", data?.logradouro);
   };
   const [pj, setPj] = useState<boolean>(false);
   return (

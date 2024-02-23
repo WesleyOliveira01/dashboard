@@ -3,6 +3,7 @@ import RenderClient from "@/components/RenderClients";
 import Container from "@/components/ui/Container";
 import { BadgePlus } from "lucide-react";
 import Link from "next/link";
+import Loading from "../loading";
 
 const Clients = async () => {
   const clients = await getClients();
@@ -16,7 +17,7 @@ const Clients = async () => {
           <BadgePlus color="green" />
         </Link>
       </section>
-      <RenderClient clients={clients} />
+      {clients.length === 0 ? <Loading /> : <RenderClient clients={clients} />}
     </Container>
   );
 };

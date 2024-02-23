@@ -52,14 +52,14 @@ const getAllSearchs = async () => {
     if (client.pesquisa === "Google") search.google++;
     if (client.pesquisa === "Indicação") search.indicacao++;
     if (client.pesquisa === "Carro de som") search.carroDeSom++;
-    if (client.pesquisa === "Panfleto") search.panfleto++;
-    if (client.pesquisa === "já é/foi cliente") search.jaFoiClient++;
+    if (client.pesquisa === "Planfeto") search.panfleto++;
+    if (client.pesquisa === "Já é/foi cliente") search.jaFoiClient++;
   });
 
   return search;
 };
 
-async function updateClient(id: string, data: any) {
+async function updateClient(data: any) {
   const endereco = `${data.endereco},${data.numero} ${data.complemento}, ${data.cep}`;
   const dataDeNascimento = formatarData(data.nascimento);
   const client = {
@@ -77,7 +77,7 @@ async function updateClient(id: string, data: any) {
   };
   await prisma.client.update({
     where: {
-      id: id,
+      id: data.id,
     },
     data: {
       ...client,
@@ -100,6 +100,7 @@ async function getClients() {
         select: { name: true, description: true, price: true, fidelity: true },
       },
     },
+    orderBy: { created_at: "desc" },
   });
 
   return allClients;
@@ -120,6 +121,8 @@ async function getClientByID(id: string) {
       endereco: true,
       vencimento: true,
       data_instalacao: true,
+      pesquisa:true,
+      nascimento:true,
       id: true,
       instalacao: true,
       plan: {
@@ -151,4 +154,5 @@ export {
   getClientByID,
   getClients,
   setInstallData,
+  updateClient,
 };
